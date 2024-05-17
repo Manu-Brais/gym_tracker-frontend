@@ -1,0 +1,21 @@
+.button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background-color 0.3s;
+}
+
+.result {
+    /* display: flex; */
+    font-size: 18px;
+    text-decoration: underline #007bff;
+    text-shadow: 3px 3px 1px #89ba8ec9;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    word-wrap: break-word; /* Asegura que el texto largo se ajuste dentro del contenedor */
+    overflow-wrap: break-word; /* Permite el ajuste del texto en líneas nuevas */
+    white-space: pre-wrap;
+}

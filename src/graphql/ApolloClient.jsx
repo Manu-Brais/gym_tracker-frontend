@@ -11,9 +11,7 @@ import { HttpLink } from "apollo-link-http"
 const httpLink = new HttpLink({ uri: "http://localhost:3000/graphql" })
 
 const authMiddleware = new ApolloLink((operation, forward) => {
-  //   const token = "BEARER TOKEN (WE HAVE TO DINAMICALLY INSERT THIS TOKEN)"
-  const token =
-    "eyJhbGciOiJFUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ2YWxpZF9mb3IiOiJhdXRoZW50aWNhdGlvbiIsImV4cCI6MTcxNjA2MzI4NX0.8g-sQ8JhTtiu8ZHB3BF2uZQLKP0B7soLK-DD_gtBVe89mBrxBH6dkKZ3q9vPCJTjr9bJ_XRjwMBLfaI2Xz03_A"
+  const token = localStorage.getItem("token")
 
   operation.setContext({
     headers: {
