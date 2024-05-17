@@ -1,11 +1,13 @@
 # Node latest frontend with React
 FROM node:latest
 
-WORKDIR /gym_tracker/frontend
+WORKDIR /app
 
-COPY . .
+COPY package*.json ./
 
 RUN npm install
+
+COPY . .
 
 EXPOSE 4000
 

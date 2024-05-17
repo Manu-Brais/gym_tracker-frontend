@@ -1,0 +1,22 @@
+version: "3.8"
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: gym_tracker-frontend
+    tty: true
+    stdin_open: true
+    networks:
+      - gym_trackr_network
+    ports:
+      - "4000:4000"
+    volumes:
+      - .:/app
+    environment:
+      - NODE_ENV=development
+
+networks:
+  gym_trackr_network:
+    driver: bridge
