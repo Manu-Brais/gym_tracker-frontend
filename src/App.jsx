@@ -1,5 +1,7 @@
 import React from "react"
 import SignUpForm from "./components/signUpForm.jsx"
+import LogInForm from "./components/logInForm.jsx"
+import LogOutButton from "./components/logOutButton.jsx"
 import styled from "styled-components"
 import DisplayReferralTokens from "./components/DisplayReferralTokens/index.jsx"
 
@@ -16,9 +18,13 @@ const Layout = styled.div`
 export default function App() {
   return (
     <Layout>
-      <section className={"hola"}>
+      <section className={"flex-row"}>
         <SignUpForm />
-        <DisplayReferralTokens />
+        <div className={"flex-col"}>
+          <LogOutButton />
+          <DisplayReferralTokens />
+          <LogInForm />
+        </div>
       </section>
     </Layout>
   )

@@ -1,13 +1,20 @@
 import React from "react"
 import styles from "./FormInput.module.css"
 
-const FormInput = ({ name, value, onChange, type = "text", placeholder }) => {
+const FormInput = ({
+  id,
+  name,
+  value,
+  onChange,
+  type = "text",
+  placeholder
+}) => {
   return (
     <>
-      <label id={name} className={styles.label}>
+      <label id={id} className={styles.label}>
         {placeholder}
         <input
-          id={name}
+          id={id}
           className={styles.input}
           name={name}
           value={value}
