@@ -25,11 +25,11 @@ const SignUpForm = () => {
 
   const handleSubmit = () => {
     signUp({ variables: { input: formState } })
+  }
 
-    if (data) {
-      const token = data.signup.token
-      localStorage.setItem("token", token)
-    }
+  if (data) {
+    const token = data.signup.token
+    localStorage.setItem("token", token)
   }
 
   return (

@@ -1,29 +1,27 @@
+import { setContext } from "@apollo/client/link/context"
 import {
   ApolloClient,
+  createHttpLink,
   InMemoryCache,
-  ApolloProvider,
-  gql
+  ApolloProvider
 } from "@apollo/client"
-import { ApolloLink, concat } from "apollo-link"
-import { HttpLink } from "apollo-link-http"
 
 // We have to remember to move this URI to a .env file
-const httpLink = new HttpLink({ uri: "http://localhost:3000/graphql" })
+const httpLink = new createHttpLink({ uri: "http://localhost:3000/graphql" })
 
-const authMiddleware = new ApolloLink((operation, forward) => {
+const authLink = setContext((_, { headers }) => {
   const token = localStorage.getItem("token")
 
-  operation.setContext({
+  return {
     headers: {
+      ...headers,
       authorization: token ? `Bearer ${token}` : ""
     }
-  })
-
-  return forward(operation)
+  }
 })
 
 const client = new ApolloClient({
-  link: concat(authMiddleware, httpLink),
+  link: authLink.concat(httpLink),
   cache: new InMemoryCache()
 })
 
