@@ -6,7 +6,7 @@ import {
   ApolloProvider
 } from "@apollo/client"
 
-// We have to remember to move this URI to a .env file
+// TODO - move this URI to a .env file
 const httpLink = new createHttpLink({ uri: "http://localhost:3000/graphql" })
 
 const authLink = setContext((_, { headers }) => {

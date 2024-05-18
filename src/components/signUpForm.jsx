@@ -12,7 +12,7 @@ const SignUpForm = () => {
     surname: "",
     phone: "",
     address: "",
-    type: "coach",
+    type: "coach", // TODO - think about how to handle this value
     email: "",
     password: "",
     passwordConfirmation: ""
@@ -35,46 +35,49 @@ const SignUpForm = () => {
   return (
     <>
       <Form onSubmit={handleSubmit}>
+        <section id="form-notices">
+          {loading && <p>Loading...</p>}
+          {error && <p>Error: {error.message}</p>}
+          {data && <p>Sign Up Successful!</p>}
+        </section>
         <label id="sign-up-form-title">Rexistro</label>
         <FormInput
-          id="name"
+          id="signUpName"
           name="name"
           value={formState.name}
           onChange={handleChange}
           placeholder="Name"
         />
         <FormInput
+          id="signUpSurname"
           name="surname"
           value={formState.surname}
           onChange={handleChange}
           placeholder="Surname"
         />
         <FormInput
+          id="signUpPhone"
           name="phone"
           value={formState.phone}
           onChange={handleChange}
           placeholder="Phone"
         />
         <FormInput
+          id="signUpAddress"
           name="address"
           value={formState.address}
           onChange={handleChange}
           placeholder="Address"
         />
-        {/* <FormInput
-          hidden
-          name="type"
-          // this value depends on the type of user you want to create
-          // if the url contains the coach JWT token, the value will be "client"
-          value={"coach"}
-        /> */}
         <FormInput
+          id="signUpEmail"
           name="email"
           value={formState.email}
           onChange={handleChange}
           placeholder="Email"
         />
         <FormInput
+          id="signUpPassword"
           name="password"
           type="password"
           value={formState.password}
@@ -82,6 +85,7 @@ const SignUpForm = () => {
           placeholder="Password"
         />
         <FormInput
+          id="signUpPasswordConfirmation"
           name="passwordConfirmation"
           type="password"
           value={formState.passwordConfirmation}
@@ -89,9 +93,6 @@ const SignUpForm = () => {
           placeholder="Confirm Password"
         />
         <FormButton>Sign Up</FormButton>
-        {loading && <p>Loading...</p>}
-        {error && <p>Error: {error.message}</p>}
-        {data && <p>Sign Up Successful!</p>}
       </Form>
     </>
   )
