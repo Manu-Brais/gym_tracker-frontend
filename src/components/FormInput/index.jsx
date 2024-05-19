@@ -6,24 +6,26 @@ const FormInput = ({
   name,
   value,
   onChange,
+  required = true,
+  label,
   type = "text",
-  placeholder
+  error
 }) => {
   return (
-    <>
-      <label id={id} className={styles.label}>
-        {placeholder}
-        <input
-          id={id}
-          className={styles.input}
-          name={name}
-          value={value}
-          onChange={onChange}
-          type={type}
-          placeholder={placeholder}
-        />
-      </label>
-    </>
+    <div className={styles.styled_input}>
+      <input
+        id={id}
+        type={type}
+        name={name}
+        value={value}
+        onChange={onChange}
+        placeholder=" "
+        required={required}
+        className={error ? styles.error : ""}
+      />
+      <label htmlFor={id}>{label}</label>
+      {error && <span className={styles.errorMessage}>{error}</span>}
+    </div>
   )
 }
 
