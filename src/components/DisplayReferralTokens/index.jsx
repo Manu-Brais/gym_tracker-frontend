@@ -1,32 +1,29 @@
 import { useState } from "react"
 import { useMutation } from "@apollo/client"
 import { GENERATE_REFERRAL_TOKEN } from "../../graphql/mutations/generateReferralToken"
+import { toast } from "react-toastify"
 import styles from "./DisplayReferralTokens.module.css"
 
 function DisplayReferralTokens() {
   const [expiration, setExpiration] = useState(null)
-  const [clientMutationId, setClientMutationId] = useState(null)
   const [generateReferalToken, { data, loading, error }] = useMutation(
     GENERATE_REFERRAL_TOKEN
   )
 
-  const handleGenerateToken = async () => {
-    try {
-      const result = await generateReferalToken({
-        variables: {
-          input: {
-            clientMutationId,
-            expiration: expiration ? parseInt(expiration) : null
-          }
-        }
-      })
-      console.log(
-        "Referral Token:",
-        result.data.generateReferalToken.referalToken
-      )
-    } catch (e) {
-      console.error("Error generating referral token:", e)
+  const handleGenerateToken = () => {
+    if (!localStorage.getItem("token")) {
+      toast.error("Test que loguearte para poder executar esta acción")
+      return
     }
+
+    generateReferalToken({
+      variables: {
+        input: {
+          clientMutationId,
+          expiration: expiration ? parseInt(expiration) : null
+        }
+      }
+    })
   }
 
   return (
