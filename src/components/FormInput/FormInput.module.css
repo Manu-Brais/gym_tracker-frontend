@@ -1,23 +1,51 @@
-.input {
+/* FormInput.module.css */
+
+.styled_input {
+    position: relative;
     width: 100%;
+}
+
+.styled_input input {
+    font-size: 16px;
     padding: 10px;
-    margin: 10px 0;
     border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-}
-
-.input:focus {
+    border-radius: 5px;
     outline: none;
-    border: 1px solid #459e74;
-}
-
-.label {
     width: 100%;
     box-sizing: border-box;
-    align-self: flex-start;
-    font-weight: bold;
-    margin-bottom: 0.5rem;
 }
 
+.styled_input input:focus {
+    border-color: #3f51b5; /* Color del borde al enfocar */
+}
 
+.styled_input input.error {
+    border-color: #f44336; /* Color rojo para indicar error */
+}
+
+.styled_input label {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+    padding: 0 5px;
+    transition: 0.3s;
+    pointer-events: none;
+    font-size: 16px;
+    color: #ccc;
+}
+
+.styled_input input:focus + label,
+.styled_input input:not(:placeholder-shown) + label {
+    top: 0;
+    left: 10px;
+    font-size: 12px;
+    color: #3f51b5;
+    background: #fff;
+}
+
+.styled_input .errorMessage {
+    color: #f44336; /* Color rojo para el mensaje de error */
+    font-size: 12px;
+    margin-top: 5px;
+}

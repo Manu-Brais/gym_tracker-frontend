@@ -42,57 +42,57 @@ const SignUpForm = () => {
         </section>
         <label id="sign-up-form-title">Rexistro</label>
         <FormInput
+          label="Nome"
           id="signUpName"
           name="name"
           value={formState.name}
           onChange={handleChange}
-          placeholder="Name"
         />
         <FormInput
+          label="Apelidos"
           id="signUpSurname"
           name="surname"
           value={formState.surname}
           onChange={handleChange}
-          placeholder="Surname"
         />
         <FormInput
+          label="Teléfono"
           id="signUpPhone"
           name="phone"
           value={formState.phone}
           onChange={handleChange}
-          placeholder="Phone"
         />
         <FormInput
+          label="Enderezo"
           id="signUpAddress"
           name="address"
           value={formState.address}
           onChange={handleChange}
-          placeholder="Address"
         />
         <FormInput
+          label="Email"
           id="signUpEmail"
           name="email"
           value={formState.email}
           onChange={handleChange}
-          placeholder="Email"
         />
         <FormInput
+          label="Contrasinal"
           id="signUpPassword"
           name="password"
-          type="password"
           value={formState.password}
           onChange={handleChange}
-          placeholder="Password"
+          type="password"
         />
         <FormInput
+          label="Confirmar contrasinal"
           id="signUpPasswordConfirmation"
           name="passwordConfirmation"
-          type="password"
           value={formState.passwordConfirmation}
           onChange={handleChange}
-          placeholder="Confirm Password"
+          type="password"
         />
-        <FormButton>Sign Up</FormButton>
+        <FormButton type="submit">Rexistrarse</FormButton>
       </Form>
     </>
   )

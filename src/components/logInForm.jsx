@@ -47,19 +47,19 @@ const LogInForm = () => {
         </Section>
         <label id="log-in-form-title">Log In</label>
         <FormInput
+          label="Email"
           id="loginEmail"
           name="email"
           value={formState.email}
           onChange={handleChange}
-          placeholder="Email"
         />
         <FormInput
+          label="Password"
           id="loginPassword"
           name="password"
           type="password"
           value={formState.password}
           onChange={handleChange}
-          placeholder="Password"
         />
         <FormButton>Log In</FormButton>
       </Form>
