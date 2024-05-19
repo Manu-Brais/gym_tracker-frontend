@@ -1,6 +1,5 @@
 import React, { useState } from "react"
-import { ToastContainer, toast } from "react-toastify"
-import "react-toastify/dist/ReactToastify.css"
+import { toast } from "react-toastify"
 import styled from "styled-components"
 
 const Button = styled.button`
@@ -46,7 +45,7 @@ const LogOutButton = () => {
     const token = localStorage.getItem("token")
     if (token) {
       setLoading(true)
-      await new Promise(resolve => setTimeout(resolve, 4000))
+      await new Promise(resolve => setTimeout(resolve, 1500))
       localStorage.removeItem("token")
       setLoading(false)
       toast.success("Sesión cerrada con éxito")
@@ -60,7 +59,6 @@ const LogOutButton = () => {
       <Button type="button" onClick={handleClick} disabled={loading}>
         {loading ? <Spinner></Spinner> : "Log out"}
       </Button>
-      <ToastContainer />
     </>
   )
 }

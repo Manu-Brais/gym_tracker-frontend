@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 import { useMutation } from "@apollo/client"
 import { LOG_IN_MUTATION } from "../graphql/mutations/logIn"
+import { toast } from "react-toastify"
 import Form from "./Form"
 import FormInput from "./FormInput"
 import FormButton from "./FormButton"
@@ -30,21 +31,22 @@ const LogInForm = () => {
 
   const handleSubmit = () => {
     logIn({ variables: { input: formState } })
-  }
 
-  if (data) {
-    const token = data.login.token
-    localStorage.setItem("token", token)
+    if (error) {
+      const errorMessage = JSON.parse(error.message)[0]
+      toast.error(`Error logging in: ${errorMessage}`)
+    }
+    if (data) {
+      const token = data.login.token
+      localStorage.setItem("token", token)
+      setFormState({ email: "", password: "" })
+      toast.success("Benvido! 🥹")
+    }
   }
 
   return (
     <>
       <Form onSubmit={handleSubmit}>
-        <Section id="form-notices">
-          {loading && <p>Loading...</p>}
-          {error && <p>Error: {error.message}</p>}
-          {data && <p>Log In Successful!</p>}
-        </Section>
         <label id="log-in-form-title">Log In</label>
         <FormInput
           id="loginEmail"
