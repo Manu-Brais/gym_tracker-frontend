@@ -50,7 +50,7 @@ const LogOutButton = () => {
       setLoading(false)
       toast.success("Sesión cerrada con éxito")
     } else {
-      alert("Ninguna sesión activa")
+      toast.error("Ninguna sesión activa")
     }
   }
 
