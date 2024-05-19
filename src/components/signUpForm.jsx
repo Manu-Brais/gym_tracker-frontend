@@ -1,6 +1,8 @@
 import React, { useState } from "react"
+import { toast } from "react-toastify"
 import { useMutation } from "@apollo/client"
 import { SIGN_UP_MUTATION } from "../graphql/mutations/signUp"
+
 import Form from "./Form"
 import FormInput from "./FormInput"
 import FormButton from "./FormButton"
@@ -25,21 +27,21 @@ const SignUpForm = () => {
 
   const handleSubmit = () => {
     signUp({ variables: { input: formState } })
-  }
-
-  if (data) {
-    const token = data.signup.token
-    localStorage.setItem("token", token)
+    if (error) {
+      const errorMessage = JSON.parse(error.message)[0]
+      toast.error(`Erro ao rexistrar o usuario: ${errorMessage}`)
+    }
+    if (data) {
+      console.log(data)
+      toast.success("Rexistro completado con éxito!")
+      const token = data.signup.token
+      localStorage.setItem("token", token)
+    }
   }
 
   return (
     <>
       <Form onSubmit={handleSubmit}>
-        <section id="form-notices">
-          {loading && <p>Loading...</p>}
-          {error && <p>Error: {error.message}</p>}
-          {data && <p>Sign Up Successful!</p>}
-        </section>
         <label id="sign-up-form-title">Rexistro</label>
         <FormInput
           label="Nome"
