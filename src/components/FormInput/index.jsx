@@ -1,30 +1,43 @@
-import React from "react"
 import styles from "./FormInput.module.css"
 
 const FormInput = ({
   id,
-  name,
-  value,
-  onChange,
-  required = true,
   label,
-  type = "text",
-  error
+  name,
+  error,
+  onChange,
+  onBlur,
+  touched,
+  value,
+  type = "text"
 }) => {
   return (
-    <div className={styles.styled_input}>
+    <div className="mb-2">
+      <label
+        htmlFor={label}
+        className="block text-sm font-medium text-gray-700">
+        {label}
+      </label>
       <input
         id={id}
-        type={type}
         name={name}
-        value={value}
+        type={type}
         onChange={onChange}
-        placeholder=" "
-        required={required}
-        className={error ? styles.error : ""}
+        onBlur={onBlur}
+        value={value}
+        className={`mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none ${
+          touched && error
+            ? "border-red-500 focus:border-red-500"
+            : "border-gray-300 focus:border-indigo-500"
+        }`}
       />
-      <label htmlFor={id}>{label}</label>
-      {error && <span className={styles.errorMessage}>{error}</span>}
+      <div className="h-3">
+        {touched && error ? (
+          <p className="mt-1 text-xs text-red-600">{error}</p>
+        ) : (
+          <p className="mt-1 text-xs text-transparent">Placeholder</p>
+        )}
+      </div>
     </div>
   )
 }

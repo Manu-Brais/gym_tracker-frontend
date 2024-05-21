@@ -1,24 +1,29 @@
-body, html {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    width: 100%;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body {
+    height: 100dvh;
+    width: 100dvw;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f9f9f9;
     display: flex;
     justify-content: center;
     align-items: center;
+    height: 100dvh;
+    width: 100dvw;
 }
 
-.flex-row {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    gap: 20px;
-}
-
-.flex-col {
+.layout {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+    width: 100dvw;
+    background-color: #f9f9f9;
+    border: none;
+    outline: none;
 }

@@ -6,22 +6,6 @@ export const SIGN_UP_MUTATION = gql`
       user {
         id
         email
-        authenticatable {
-          ... on Client {
-            address
-            id
-            name
-            phone
-            surname
-          }
-          ... on Coach {
-            address
-            id
-            name
-            phone
-            surname
-          }
-        }
       }
       token
     }
