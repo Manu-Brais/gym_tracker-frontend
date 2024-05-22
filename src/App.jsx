@@ -1,11 +1,12 @@
 import React from "react"
 import SignUpForm from "./components/signUpForm.jsx"
-import styled from "styled-components"
+import LogInForm from "./components/logInForm.jsx"
 
 export default function App() {
   return (
-    <div className="layout">
+    <main className="layout">
       <SignUpForm />
-    </div>
+      {/* <LogInForm /> */}
+    </main>
   )
 }

@@ -1,0 +1,70 @@
+.button {
+    background-color: #134fd1b5;
+    color: white;
+    border-radius: 5px;
+    border: none;
+    font-size: 21px;
+    font-weight: bold;
+    padding: 0;
+    display: flex;
+    height: 55px;
+    width: 10rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    position: relative;
+    overflow: hidden;
+    transition: background-color 0.3s ease;
+}
+
+.button:hover {
+    background-color: #134fd196;
+    color: #e9e9e9;
+    cursor: pointer;
+}
+
+.sending {
+    background-color: #98b6babc;
+}
+
+.sent {
+    background-color: #25bd349f;
+}
+
+.textWrapper {
+    display: flex;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.textSend, .textSent {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    transition: transform 0.3s ease;
+}
+
+.button .textSend {
+    transform: translateX(0);
+}
+
+.button.sent .textSend {
+    transform: translateX(-100%);
+}
+
+.button .textSent {
+    transform: translateX(100%);
+}
+
+.button.sent .textSent {
+    transform: translateX(0);
+}
+
+.icon {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    width: 55px;
+    margin-right: 4px;
+}

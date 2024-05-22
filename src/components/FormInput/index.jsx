@@ -9,13 +9,14 @@ const FormInput = ({
   onBlur,
   touched,
   value,
+  placeholder,
   type = "text"
 }) => {
   return (
-    <div className="mb-2">
+    <div className="">
       <label
         htmlFor={label}
-        className="block text-sm font-medium text-gray-700">
+        className="block text-pretty text font-bold text-gray-500">
         {label}
       </label>
       <input
@@ -25,7 +26,8 @@ const FormInput = ({
         onChange={onChange}
         onBlur={onBlur}
         value={value}
-        className={`mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none ${
+        placeholder={placeholder}
+        className={`mt-1 block w-full px-3 py-2 border bg-white/25 border-slate-800/15 rounded focus:outline-none placeholder:text-gray-300 placeholder:font-thin placeholder:italic ${
           touched && error
             ? "border-red-500 focus:border-red-500"
             : "border-gray-300 focus:border-indigo-500"
