@@ -1,64 +1,92 @@
-// import React, { useState } from "react"
-// import { useMutation } from "@apollo/client"
-// import { LOG_IN_MUTATION } from "../graphql/mutations/logIn"
-// import { toast } from "react-toastify"
-// import { useForm } from "react-hook-form"
-// import Form from "./Form"
-// import FormInput from "./FormInput"
-// import FormButton from "./FormButton"
+import React, { useEffect } from "react"
+import { toast } from "react-toastify"
 
-// const LogInForm = () => {
-//   const [logIn, { data, loading, error }] = useMutation(LOG_IN_MUTATION)
-//   const { register, handleSubmit, formState } = useForm()
+// Form handling and validation
+import { useFormik } from "formik"
+import { LogInSchema } from "./validation/logInSchema"
 
-//   if (formState.errors?.email?.message || formState.errors?.password?.message) {
-//     toast.error(
-//       `Error: ${
-//         formState.errors?.email?.message || formState.errors?.password?.message
-//       }`
-//     )
-//   }
-//   const onSubmit = formData => {
-//     logIn({ variables: { input: formData } })
-//     if (data) {
-//       const token = data.login.token
-//       localStorage.setItem("token", token)
-//       console.log(formState)
-//       toast.success("Benvido! 🥹")
-//     }
-//   }
+// GraphQL
+import { LOG_IN_MUTATION } from "../graphql/mutations/logIn"
+import useGraphQLMutation from "../hooks/useGraphQlMutation"
 
-//   return (
-//     <>
-//       <Form onSubmit={handleSubmit(onSubmit)}>
-//         <label id="log-in-form-title">Log In</label>
-//         <FormInput
-//           register={register("email", {
-//             required: { value: true, message: "Email is required" },
-//             minLength: {
-//               value: 5,
-//               message: "Email must be at least 5 characters long"
-//             }
-//           })}
-//           label="email"
-//           id="loginEmail"
-//         />
-//         <FormInput
-//           register={register("password", {
-//             required: { value: true, message: "Password is required" },
-//             minLength: {
-//               value: 5,
-//               message: "Password must be at least 5 characters long"
-//             }
-//           })}
-//           label="password"
-//           type="password"
-//           id="loginPassword"
-//         />
-//         <FormButton>Log In</FormButton>
-//       </Form>
-//     </>
-//   )
-// }
+// Components
+import FormInput from "./FormInput"
+import Button from "./Button"
 
-// export default LogInForm
+// Image
+import gymImage from "../assets/gym.png"
+import Gymtrackr from "../assets/Gymtrackr.svg"
+
+const SignUpForm = () => {
+  const onCompleted = (data, resetForm) => {
+    const token = data.login.token
+    localStorage.setItem("token", token)
+    resetForm()
+  }
+  const { execute } = useGraphQLMutation(LOG_IN_MUTATION, data =>
+    onCompleted(data, formik.resetForm)
+  )
+  const handleSubmit = async (values, { resetForm }) => {
+    await execute({ input: values })
+  }
+
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: ""
+    },
+    validationSchema: LogInSchema,
+    onSubmit: handleSubmit
+  })
+
+  return (
+    <form
+      onSubmit={formik.handleSubmit}
+      className="flex flex-col lg:flex-row w-[85%] min-w-80 max-w-[550px] lg:max-w-[950px] rounded overflow-hidden shadow-md shadow-black-500 bg-slate-50/80">
+      <div className="relative lg:order-2 lg:h-full h-32 w-full lg:w-1/2">
+        <img
+          src={gymImage}
+          alt="gym"
+          className="object-cover w-full h-full brightness-150"
+        />
+        <img
+          src={Gymtrackr}
+          alt="gym"
+          className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-28 lg:w-64"
+        />
+      </div>
+      <div className="flex flex-col justify-end gap-3 w-full px-10 py-8 lg:order-1 lg:w-1/2 lg:p-16 lg:items-center lg:justify-between">
+        <div className="flex flex-col gap-[0.75rem] mb-4 w-full">
+          <FormInput
+            id="email"
+            label="Email"
+            name="email"
+            placeholder="jhon@doe.com"
+            error={formik.errors.email}
+            touched={formik.touched.email}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.email}
+          />
+          <FormInput
+            id="password"
+            label="Contrasinal"
+            name="password"
+            placeholder="SecurePassword123!"
+            error={formik.errors.password}
+            touched={formik.touched.password}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.password}
+            type="password"
+          />
+        </div>
+        <Button type="submit" isLoading={formik.isSubmitting}>
+          Acceder
+        </Button>
+      </div>
+    </form>
+  )
+}
+
+export default SignUpForm
