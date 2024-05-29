@@ -6,6 +6,8 @@ import ErrorPage from "./pages/ErrorPage.jsx"
 import SignUpForm from "./components/signUpForm.jsx"
 import LogInForm from "./components/logInForm.jsx"
 import GenerateReferralLink from "./components/GenerateReferralLink.jsx"
+import CreateExerciseForm from "./components/CreateExerciseForm"
+import ShowVideoComponent from "./components/ShowVideoComponent"
 
 const router = createBrowserRouter([
   {
@@ -18,6 +20,14 @@ const router = createBrowserRouter([
           {
             path: "/:coachId/generate-referral-link",
             element: <GenerateReferralLink />
+          },
+          {
+            path: "/:coachId/create-exercise",
+            element: <CreateExerciseForm />
+          },
+          {
+            path: "/video",
+            element: <ShowVideoComponent />
           }
         ]
       },

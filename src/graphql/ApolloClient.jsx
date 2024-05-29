@@ -6,9 +6,11 @@ import {
   InMemoryCache,
   ApolloProvider
 } from "@apollo/client"
+import createUploadLink from "apollo-upload-client/createUploadLink.mjs"
 
 // TODO - move this URI to a .env file
-const httpLink = new createHttpLink({ uri: "http://localhost:3000/graphql" })
+// const httpLink = new createHttpLink({ uri: "http://localhost:3000/graphql" })
+const httpLink = createUploadLink({ uri: "http://localhost:3000/graphql" })
 
 const authLink = setContext((_, { headers }) => {
   const token = Cookies.get("token")

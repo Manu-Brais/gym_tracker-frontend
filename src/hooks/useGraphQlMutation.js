@@ -1,18 +1,22 @@
 import { useEffect, useRef } from "react"
-import { toast } from "react-toastify"
 import { useMutation } from "@apollo/client"
 
-const useGraphQLMutation = (mutation, onCompleted) => {
+const useGraphQLMutation = (
+  mutation,
+  onCompleted,
+  successNotice,
+  failureAlert
+) => {
   const [executeMutation, { called, data, error }] = useMutation(mutation)
   const notifiedRef = useRef(false)
 
   useEffect(() => {
     if (called && data && !notifiedRef.current) {
-      toast.success("Benvido!")
+      successNotice()
       onCompleted(data)
       notifiedRef.current = true
     } else if (called && error && !notifiedRef.current) {
-      toast.error(error.message)
+      failureAlert()
       notifiedRef.current = true
     }
   }, [called, data, error, onCompleted])
