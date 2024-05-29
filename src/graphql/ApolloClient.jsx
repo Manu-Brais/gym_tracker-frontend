@@ -1,3 +1,4 @@
+import Cookies from "js-cookie"
 import { setContext } from "@apollo/client/link/context"
 import {
   ApolloClient,
@@ -10,7 +11,7 @@ import {
 const httpLink = new createHttpLink({ uri: "http://localhost:3000/graphql" })
 
 const authLink = setContext((_, { headers }) => {
-  const token = localStorage.getItem("token")
+  const token = Cookies.get("token")
 
   return {
     headers: {
