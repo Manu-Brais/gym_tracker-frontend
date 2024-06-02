@@ -8,11 +8,11 @@ const useGraphQLQuery = (query, onCompleted, successNotice, failureAlert) => {
   useEffect(() => {
     if (called && data && !notifiedRef.current) {
       onCompleted(data)
-      successNotice()
+      successNotice?.()
       notifiedRef.current = true
     } else if (called && error && !notifiedRef.current) {
       console.error(error)
-      failureAlert()
+      failureAlert ? failureAlert() : toast.error(error.message)
       notifiedRef.current = true
     }
   }, [called, data, error, onCompleted])
