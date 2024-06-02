@@ -60,3 +60,9 @@ body {
 .fade-out {
     animation: fadeOut 0.15s forwards;
 }
+
+.loading {
+    opacity: 0.25;
+    transition: opacity 1s;
+    transition-delay: 200s;
+}

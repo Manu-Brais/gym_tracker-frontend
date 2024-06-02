@@ -1,32 +1,30 @@
-import React, { useEffect } from "react"
-import { toast } from "react-toastify"
-
-// Form handling and validation
+import { useNavigate } from "react-router-dom"
+import { useAuth } from "../context/AuthContext"
 import { useFormik } from "formik"
 import { LogInSchema } from "./validation/logInSchema"
-
-// GraphQL
 import { LOG_IN_MUTATION } from "../graphql/mutations/logIn"
 import useGraphQLMutation from "../hooks/useGraphQlMutation"
-
-// Components
 import FormInput from "./FormInput"
 import Button from "./Button"
-
-// Image
 import gymImage from "../assets/gym.png"
 import Gymtrackr from "../assets/Gymtrackr.svg"
 
-const SignUpForm = () => {
+const LogInForm = () => {
+  const navigate = useNavigate()
+  const { logIn } = useAuth()
+
   const onCompleted = (data, resetForm) => {
     const token = data.login.token
-    localStorage.setItem("token", token)
-    resetForm()
+    const user_id = data.login.user.id
+    logIn(token, user_id)
+    navigate("/")
   }
+
   const { execute } = useGraphQLMutation(LOG_IN_MUTATION, data =>
     onCompleted(data, formik.resetForm)
   )
-  const handleSubmit = async (values, { resetForm }) => {
+
+  const handleSubmit = async values => {
     await execute({ input: values })
   }
 
@@ -89,4 +87,4 @@ const SignUpForm = () => {
   )
 }
 
-export default SignUpForm
+export default LogInForm

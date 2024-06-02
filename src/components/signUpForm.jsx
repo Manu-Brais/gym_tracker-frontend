@@ -1,47 +1,50 @@
-import React, { useEffect } from "react"
-import { toast } from "react-toastify"
-
-// Form handling and validation
+import React from "react"
+import { Navigate, useNavigate } from "react-router-dom"
+import { useLocation } from "react-router-dom"
+import { useAuth } from "../context/AuthContext"
 import { useFormik } from "formik"
 import { SignupSchema } from "./validation/signUpSchema"
-
-// GraphQL
 import { SIGN_UP_MUTATION } from "../graphql/mutations/signUp"
 import useGraphQLMutation from "../hooks/useGraphQlMutation"
-
-// Components
 import FormInput from "./FormInput"
 import Button from "./Button"
-
-// Image
 import gymImage from "../assets/gym.png"
 import Gymtrackr from "../assets/Gymtrackr.svg"
 
 const SignUpForm = () => {
-  const onCompleted = (data, resetForm) => {
+  const navigate = useNavigate()
+  const { logIn } = useAuth()
+
+  const onCompleted = data => {
     const token = data.signup.token
-    localStorage.setItem("token", token)
-    resetForm()
+    const user_id = data.signup.user.id
+    logIn(token, user_id)
+    navigate("/")
   }
   const { execute } = useGraphQLMutation(SIGN_UP_MUTATION, data =>
-    onCompleted(data, formik.resetForm)
+    onCompleted(data)
   )
-  const handleSubmit = async (values, { resetForm }) => {
+  const handleSubmit = async values => {
     await execute({ input: values })
   }
 
-  const formik = useFormik({
-    // TODO: Implement the logic to set `type` and `referralToken` based on the query params
-    // if the query params are not present, the default values should be `coach` and `""`
-    // and, if the query params are present, the default values should be:
-    // `type` = `client`, referralToken:  params.`referralToken`
-    initialValues: {
-      type: "coach",
+  const location = useLocation()
+  const queryParams = new URLSearchParams(location.search)
+
+  const setInitialValues = () => {
+    const referral = queryParams.get("referral")
+    const values = {
+      type: referral ? "client" : "coach",
       email: "",
       password: "",
       passwordConfirmation: "",
-      referralToken: ""
-    },
+      referralToken: referral ? referral : ""
+    }
+    return values
+  }
+
+  const formik = useFormik({
+    initialValues: setInitialValues(),
     validationSchema: SignupSchema,
     onSubmit: handleSubmit
   })
