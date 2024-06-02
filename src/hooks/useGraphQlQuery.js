@@ -1,21 +1,17 @@
 import { useEffect, useRef } from "react"
-import { useMutation } from "@apollo/client"
+import { useLazyQuery } from "@apollo/client"
 
-const useGraphQLMutation = (
-  mutation,
-  onCompleted,
-  successNotice,
-  failureAlert
-) => {
-  const [executeMutation, { called, data, error }] = useMutation(mutation)
+const useGraphQLQuery = (query, onCompleted, successNotice, failureAlert) => {
+  const [executeQuery, { called, data, error }] = useLazyQuery(query)
   const notifiedRef = useRef(false)
 
   useEffect(() => {
     if (called && data && !notifiedRef.current) {
-      successNotice()
       onCompleted(data)
+      successNotice()
       notifiedRef.current = true
     } else if (called && error && !notifiedRef.current) {
+      console.error(error)
       failureAlert()
       notifiedRef.current = true
     }
@@ -24,7 +20,7 @@ const useGraphQLMutation = (
   const execute = async variables => {
     try {
       notifiedRef.current = false
-      await executeMutation({ variables })
+      await executeQuery({ variables })
     } catch (e) {
       console.log(e)
     }
@@ -33,4 +29,4 @@ const useGraphQLMutation = (
   return { execute }
 }
 
-export default useGraphQLMutation
+export default useGraphQLQuery
