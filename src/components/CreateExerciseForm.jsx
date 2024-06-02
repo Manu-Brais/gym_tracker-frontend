@@ -57,7 +57,9 @@ const CreateExerciseForm = () => {
           onBlur={formik.handleBlur}
           value={formik.values.title}
         />
+        {/* Would be very nice if we include a text editor for the description and offer some kind of markdown support */}
         <FormInput
+          type="textarea"
           id="description"
           label="Descripción"
           name="description"
@@ -69,18 +71,25 @@ const CreateExerciseForm = () => {
           value={formik.values.description}
         />
         <div className="mb-4">
-          <label
-            htmlFor="videoFile"
-            className="block text-sm font-medium text-gray-700">
-            Archivo de Video
-          </label>
-          <input
-            id="videoFile"
-            name="videoFile"
-            type="file"
-            onChange={handleFileChange}
-            className="mt-1 block w-full"
-          />
+          <div className="flex items-center">
+            <label
+              htmlFor="videoFile"
+              className="cursor-pointer bg-slate-950 text-[#a2ffff] px-4 py-2 rounded-lg shadow-md hover:bg-slate-800 hover:text-[#e3ffff] focus:outline-none focus:ring-2 focus:ring-indigo-400 text-balance text-center">
+              Seleccionar archivo
+            </label>
+            <input
+              id="videoFile"
+              name="videoFile"
+              type="file"
+              onChange={handleFileChange}
+              className="hidden"
+            />
+            <span className="ml-3 text-gray-700">
+              {formik.values.videoFile
+                ? formik.values.videoFile.name
+                : "No file chosen"}
+            </span>
+          </div>
           {formik.errors.videoFile && formik.touched.videoFile && (
             <p className="text-red-500 text-xs mt-1">
               {formik.errors.videoFile}

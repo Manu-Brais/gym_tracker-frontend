@@ -6,6 +6,7 @@ import { useFormik } from "formik"
 import { SignupSchema } from "./validation/signUpSchema"
 import { SIGN_UP_MUTATION } from "../graphql/mutations/signUp"
 import useGraphQLMutation from "../hooks/useGraphQlMutation"
+import { toast } from "react-toastify"
 import FormInput from "./FormInput"
 import Button from "./Button"
 import gymImage from "../assets/gym.png"
@@ -21,8 +22,11 @@ const SignUpForm = () => {
     logIn(token, user_id)
     navigate("/")
   }
-  const { execute } = useGraphQLMutation(SIGN_UP_MUTATION, data =>
-    onCompleted(data)
+  const { execute } = useGraphQLMutation(
+    SIGN_UP_MUTATION,
+    data => onCompleted(data),
+    () => toast.success("Conta creada con éxito"),
+    null
   )
   const handleSubmit = async values => {
     await execute({ input: values })
