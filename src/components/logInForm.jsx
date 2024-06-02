@@ -4,6 +4,7 @@ import { useFormik } from "formik"
 import { LogInSchema } from "./validation/logInSchema"
 import { LOG_IN_MUTATION } from "../graphql/mutations/logIn"
 import useGraphQLMutation from "../hooks/useGraphQlMutation"
+import { toast } from "react-toastify"
 import FormInput from "./FormInput"
 import Button from "./Button"
 import gymImage from "../assets/gym.png"
@@ -20,8 +21,11 @@ const LogInForm = () => {
     navigate("/")
   }
 
-  const { execute } = useGraphQLMutation(LOG_IN_MUTATION, data =>
-    onCompleted(data, formik.resetForm)
+  const { execute } = useGraphQLMutation(
+    LOG_IN_MUTATION,
+    data => onCompleted(data, formik.resetForm),
+    () => toast.success("Benvido!"),
+    null
   )
 
   const handleSubmit = async values => {
