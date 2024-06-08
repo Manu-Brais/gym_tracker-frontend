@@ -2,6 +2,7 @@ import React from "react"
 import { createBrowserRouter } from "react-router-dom"
 import Root from "./pages/Root.jsx"
 import ProtectedRoute from "./components/ProtectedRoute.jsx"
+import CoachProtectedRoute from "./components/CoachProtectedRoute.jsx"
 import ErrorPage from "./pages/ErrorPage.jsx"
 import SignUpForm from "./components/signUpForm.jsx"
 import LogInForm from "./components/logInForm.jsx"
@@ -18,12 +19,17 @@ const router = createBrowserRouter([
         element: <ProtectedRoute />,
         children: [
           {
-            path: "/:coachId/generate-referral-link",
-            element: <GenerateReferralLink />
-          },
-          {
-            path: "/:coachId/create-exercise",
-            element: <CreateExerciseForm />
+            element: <CoachProtectedRoute />,
+            children: [
+              {
+                path: "/:coachId/generate-referral-link",
+                element: <GenerateReferralLink />
+              },
+              {
+                path: "/:coachId/create-exercise",
+                element: <CreateExerciseForm />
+              }
+            ]
           },
           {
             path: "/video",
@@ -37,7 +43,7 @@ const router = createBrowserRouter([
               // 3. Paste the videoUrl in the videoUrl prop of the ShowVideoComponent usint this host: http://localhost:3000/
               <ShowVideoComponent
                 videoUrl={
-                  "http://localhost:3000/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsiZGF0YSI6MSwicHVyIjoiYmxvYl9pZCJ9fQ==--8720421703844e1bb604389b9d874feaff1b7c40/X-ray%20Man%20Animation.mp4"
+                  "http://localhost:3000//rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsiZGF0YSI6MzUsInB1ciI6ImJsb2JfaWQifX0=--56d65105d72dd7b37a2a7d5d7a76d7961d6de402/speciesism_en.mp4"
                 }
                 title={"Curl bíceps"}
                 description={
