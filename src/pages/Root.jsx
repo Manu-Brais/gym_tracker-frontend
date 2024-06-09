@@ -11,7 +11,17 @@ export default function Root() {
       className={`layout ${navigation.state == "loading" ? "loading" : ""}`}>
       <Navbar />
       <Outlet />
-      <ToastContainer />
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        newestOnTop
+        closeOnClick
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        stacked
+      />
     </main>
   )
 }

@@ -11,27 +11,11 @@ import FormInput from "./FormInput"
 import Button from "./Button"
 import gymImage from "../assets/gym.png"
 import Gymtrackr from "../assets/Gymtrackr.svg"
+import { jwtDecode } from "jwt-decode"
 
 const SignUpForm = () => {
-  const navigate = useNavigate()
   const { logIn } = useAuth()
-
-  const onCompleted = data => {
-    const token = data.signup.token
-    const user_id = data.signup.user.id
-    logIn(token, user_id)
-    navigate("/")
-  }
-  const { execute } = useGraphQLMutation(
-    SIGN_UP_MUTATION,
-    data => onCompleted(data),
-    () => toast.success("Conta creada con éxito"),
-    null
-  )
-  const handleSubmit = async values => {
-    await execute({ input: values })
-  }
-
+  const navigate = useNavigate()
   const location = useLocation()
   const queryParams = new URLSearchParams(location.search)
 
@@ -42,9 +26,28 @@ const SignUpForm = () => {
       email: "",
       password: "",
       passwordConfirmation: "",
-      referralToken: referral ? referral : ""
+      referralToken: referral || ""
     }
     return values
+  }
+
+  const onCompleted = data => {
+    const token = data.signup.token
+    const { user_id, user_type } = jwtDecode(token)
+
+    logIn(token, user_id, user_type)
+    navigate("/")
+  }
+
+  const { execute } = useGraphQLMutation(
+    SIGN_UP_MUTATION,
+    data => onCompleted(data),
+    () => toast.success("Conta creada con éxito"),
+    null
+  )
+
+  const handleSubmit = async values => {
+    await execute({ input: values })
   }
 
   const formik = useFormik({

@@ -22,11 +22,11 @@ const router = createBrowserRouter([
             element: <CoachProtectedRoute />,
             children: [
               {
-                path: "/:coachId/generate-referral-link",
+                path: "/generate-referral-link",
                 element: <GenerateReferralLink />
               },
               {
-                path: "/:coachId/create-exercise",
+                path: "/create-exercise",
                 element: <CreateExerciseForm />
               }
             ]

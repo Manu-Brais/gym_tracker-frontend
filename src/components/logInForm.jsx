@@ -9,22 +9,23 @@ import FormInput from "./FormInput"
 import Button from "./Button"
 import gymImage from "../assets/gym.png"
 import Gymtrackr from "../assets/Gymtrackr.svg"
+import { jwtDecode } from "jwt-decode"
 
 const LogInForm = () => {
   const navigate = useNavigate()
   const { logIn } = useAuth()
 
-  const onCompleted = (data, resetForm) => {
+  const onCompleted = data => {
     const token = data.login.token
-    const user_id = data.login.user.id
-    logIn(token, user_id)
+    const { user_id, user_type } = jwtDecode(token)
+    logIn(token, user_id, user_type)
     navigate("/")
   }
 
   const { execute } = useGraphQLMutation(
     LOG_IN_MUTATION,
-    data => onCompleted(data, formik.resetForm),
-    () => toast.success("Benvido!"),
+    data => onCompleted(data),
+    () => toast.success("Welcome back!", { icon: "👋" }),
     null
   )
 

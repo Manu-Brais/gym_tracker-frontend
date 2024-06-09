@@ -6,7 +6,7 @@ import { Link } from "react-router-dom"
 import { toast } from "react-toastify"
 
 export default function GenerateReferralLink() {
-  const [token, setToken] = useState("")
+  const [referralToken, setReferralToken] = useState("")
 
   const { execute } = useGraphQLQuery(
     GET_REFERRAL_TOKEN_QUERY,
@@ -20,19 +20,29 @@ export default function GenerateReferralLink() {
   }
 
   const onCompleted = data => {
-    const token = data.getReferral.referralToken
-    setToken(token)
+    const referralToken = data.getReferral.referralToken
+    setReferralToken(referralToken)
   }
 
   return (
-    <div>
+    <div className="flex flex-col items-center gap-4">
       <h1>GenerateReferralLink</h1>
-      <Button onClick={handleSubmit}>Obter Referral</Button>
+      <button
+        onClick={handleSubmit}
+        className="w-48 h-12 bg-blue-500 text-white rounded-md">
+        Generate Referral Link
+      </button>
       <div>
-        <Link to={`/signup?referral=${token}`}>
-          <h1>Rexistrarse como cliente</h1>
-          <Button>{`/signup?referral=${token}`}</Button>
-        </Link>
+        {referralToken && (
+          <>
+            <h1>Here is your referral link:</h1>
+            <Link
+              to={`/signup?referral=${referralToken}`}
+              className="text-blue-500 hover:underline text-lg">
+              {`https://www.gym-trackr/signup?referral=${referralToken}`}
+            </Link>
+          </>
+        )}
       </div>
     </div>
   )

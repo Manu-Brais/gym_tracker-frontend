@@ -1,11 +1,6 @@
 import Cookies from "js-cookie"
 import { setContext } from "@apollo/client/link/context"
-import {
-  ApolloClient,
-  createHttpLink,
-  InMemoryCache,
-  ApolloProvider
-} from "@apollo/client"
+import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client"
 import createUploadLink from "apollo-upload-client/createUploadLink.mjs"
 
 // TODO - move this URI to a .env file
@@ -13,7 +8,7 @@ import createUploadLink from "apollo-upload-client/createUploadLink.mjs"
 const httpLink = createUploadLink({ uri: "http://localhost:3000/graphql" })
 
 const authLink = setContext((_, { headers }) => {
-  const token = Cookies.get("token")
+  const token = Cookies.get("gt-token")
 
   return {
     headers: {
