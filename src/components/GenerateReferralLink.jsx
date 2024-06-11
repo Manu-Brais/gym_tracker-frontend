@@ -1,5 +1,4 @@
 import React, { useState } from "react"
-import Button from "./Button"
 import useGraphQLQuery from "../hooks/useGraphQlQuery"
 import { GET_REFERRAL_TOKEN_QUERY } from "../graphql/queries/getReferralToken"
 import { Link } from "react-router-dom"
@@ -25,7 +24,7 @@ export default function GenerateReferralLink() {
   }
 
   return (
-    <div className="flex flex-col items-center gap-4">
+    <div className="flex flex-col items-center align-middle gap-4 w-full h-full">
       <h1>GenerateReferralLink</h1>
       <button
         onClick={handleSubmit}

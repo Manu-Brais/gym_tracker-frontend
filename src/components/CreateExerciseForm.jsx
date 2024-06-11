@@ -44,7 +44,7 @@ const CreateExerciseForm = () => {
   return (
     <form
       onSubmit={formik.handleSubmit}
-      className="flex flex-col w-[85%] min-w-80 max-w-[550px] rounded overflow-hidden shadow-md shadow-black-500 bg-slate-50/80">
+      className="flex flex-col mx-auto mt-12 w-full min-h-96 max-w-[750px] rounded overflow-hidden shadow-md shadow-black-500 bg-slate-50/80">
       <div className="flex flex-col gap-[0.75rem] mb-4 w-full px-10 py-8">
         <FormInput
           id="title"
