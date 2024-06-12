@@ -9,6 +9,8 @@ import LogInForm from "./components/logInForm.jsx"
 import GenerateReferralLink from "./components/GenerateReferralLink.jsx"
 import CreateExerciseForm from "./components/CreateExerciseForm"
 import ShowVideoComponent from "./components/ShowVideoComponent"
+import ExercisesPage from "./pages/coach/exercises/ExercisesPage.jsx"
+import { loader as exercisesLoader } from ".//pages/coach/exercises/loader.js"
 
 const router = createBrowserRouter([
   {
@@ -21,6 +23,11 @@ const router = createBrowserRouter([
           {
             element: <CoachProtectedRoute />,
             children: [
+              {
+                path: "/exercises",
+                element: <ExercisesPage />,
+                loader: exercisesLoader
+              },
               {
                 path: "/generate-referral-link",
                 element: <GenerateReferralLink />

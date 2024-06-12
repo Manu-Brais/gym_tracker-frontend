@@ -59,8 +59,8 @@ const SignUpForm = () => {
   return (
     <form
       onSubmit={formik.handleSubmit}
-      className="flex flex-col lg:flex-row w-[85%] min-w-80 max-w-[550px] lg:max-w-[950px] rounded overflow-hidden shadow-md shadow-black-500 bg-slate-50/80">
-      <div className="relative lg:order-2 lg:h-full h-36 w-full lg:w-1/2">
+      className="flex flex-col mx-auto lg:flex-row w-[85%] min-w-80 max-w-[550px] lg:max-w-[950px] rounded overflow-hidden shadow-md shadow-black-500 bg-slate-50/80">
+      <div className="relative lg:order-2 h-40 lg:h-auto w-full lg:w-1/2">
         <img
           src={gymImage}
           alt="gym"

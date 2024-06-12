@@ -16,7 +16,7 @@ export default function Navbar() {
     // This is a temporary navbar, for development purposes only
     // Wil be replaced by a more complex navbar in the future when
     // the design is clearer
-    <nav className="flex items-center justify-between w-full px-10 py-4 bg-white shadow absolute top-0">
+    <nav className="flex items-center justify-between w-full px-10 py-4 bg-white shadow fixed top-0 h-20 z-10">
       <Link to="/">
         <img src={Gymtrackr} alt="gymtrackr" className="w-16" />
       </Link>
@@ -36,6 +36,11 @@ export default function Navbar() {
             <Link to="/create-exercise">
               <button className="text-lg font-light text-gray-600">
                 Create New Exercise
+              </button>
+            </Link>
+            <Link to="/exercises">
+              <button className="text-lg font-light text-gray-600">
+                Exercises
               </button>
             </Link>
           </>

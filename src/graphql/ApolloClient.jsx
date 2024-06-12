@@ -26,3 +26,5 @@ const client = new ApolloClient({
 export const ApolloWrapper = ({ children }) => (
   <ApolloProvider client={client}>{children}</ApolloProvider>
 )
+
+export default client

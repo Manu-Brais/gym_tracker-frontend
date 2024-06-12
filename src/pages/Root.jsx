@@ -4,13 +4,12 @@ import { ToastContainer } from "react-toastify"
 import Navbar from "../components/Navbar"
 
 export default function Root() {
-  const navigation = useNavigation()
-
   return (
-    <main
-      className={`layout ${navigation.state == "loading" ? "loading" : ""}`}>
+    <main className="layout min-h-full">
       <Navbar />
-      <Outlet />
+      <div className="pt-20 w-full">
+        <Outlet />
+      </div>
       <ToastContainer
         position="top-right"
         autoClose={5000}
