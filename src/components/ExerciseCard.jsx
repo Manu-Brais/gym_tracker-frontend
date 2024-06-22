@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react"
-import { RotatingLines } from "react-loader-spinner"
 
 const ExerciseCard = ({ videoStatus, videoUrl, title, description }) => {
   const [isLoading, setIsLoading] = useState(false)

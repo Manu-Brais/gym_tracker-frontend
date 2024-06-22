@@ -10,6 +10,7 @@ import GenerateReferralLink from "./components/GenerateReferralLink.jsx"
 import CreateExerciseForm from "./components/CreateExerciseForm"
 import ExercisesPage from "./pages/coach/exercises/ExercisesPage.jsx"
 import ProfilePage from "./pages/user/profile/ProfilePage.jsx"
+import SubscriptionTestPage from "./pages/SubscriptionTestPage.jsx"
 
 const router = createBrowserRouter([
   {
@@ -50,6 +51,10 @@ const router = createBrowserRouter([
       {
         path: "signup",
         element: <SignUpForm />
+      },
+      {
+        path: "subscription-test",
+        element: <SubscriptionTestPage />
       },
       {
         path: "*",
