@@ -13,7 +13,7 @@ const useGraphQLMutation = (
 
   useEffect(() => {
     if (called && data && !notifiedRef.current) {
-      successNotice()
+      successNotice?.()
       onCompleted(data)
       notifiedRef.current = true
     } else if (called && error && !notifiedRef.current) {

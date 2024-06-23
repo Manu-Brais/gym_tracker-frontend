@@ -9,6 +9,7 @@ import LogInForm from "./components/logInForm.jsx"
 import GenerateReferralLink from "./components/GenerateReferralLink.jsx"
 import CreateExerciseForm from "./components/CreateExerciseForm"
 import ExercisesPage from "./pages/coach/exercises/ExercisesPage.jsx"
+import ProfilePage from "./pages/user/profile/ProfilePage.jsx"
 
 const router = createBrowserRouter([
   {
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
                 element: <CreateExerciseForm />
               }
             ]
+          },
+          {
+            path: "/profile",
+            element: <ProfilePage />
           }
         ]
       },
