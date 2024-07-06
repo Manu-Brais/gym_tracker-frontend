@@ -1,6 +1,9 @@
 import React from "react"
+import { useNavigate } from "react-router-dom"
 
 function ExerciseTable({ exercises, ITEMS_PER_PAGE }) {
+  const navigate = useNavigate()
+
   return (
     <table className="w-full border-collapse rounded overflow-hidden shadow-sm">
       <caption className="hidden">Exercises list</caption>
@@ -17,7 +20,7 @@ function ExerciseTable({ exercises, ITEMS_PER_PAGE }) {
             <td className="max-w-12 w-2/6 px-8 py-4 truncate overflow-ellipsis whitespace-nowrap">
               {exercise.title}
             </td>
-            <td className="w-3/6 px-8 py-4 truncate overflow-ellipsis whitespace-nowrap">
+            <td className="max-w-16 w-3/6 px-8 py-4 truncate overflow-ellipsis whitespace-nowrap">
               {exercise.description}
             </td>
             <td className="px-8 py-4 flex justify-evenly">
@@ -25,9 +28,7 @@ function ExerciseTable({ exercises, ITEMS_PER_PAGE }) {
                 <button
                   className="text-blue-500"
                   id={exercise.id}
-                  onClick={() => {
-                    alert(`Details for exercise ${exercise.id}`)
-                  }}>
+                  onClick={() => navigate(`/exercises/${exercise.id}`)}>
                   Details
                 </button>
               </div>
