@@ -1,8 +1,48 @@
 import React from "react"
 import { useNavigate } from "react-router-dom"
+import { DELETE_EXERCISE_MUTATION } from "../graphql/mutations/deleteExercise"
+import { useMutation } from "@apollo/client"
+import { EXERCISES_QUERY } from "../graphql/queries/coach/exercises"
+import { toast } from "react-toastify"
 
 function ExerciseTable({ exercises, ITEMS_PER_PAGE }) {
   const navigate = useNavigate()
+
+  const [deleteExercise] = useMutation(DELETE_EXERCISE_MUTATION, {
+    refetchQueries: [{ query: EXERCISES_QUERY }],
+    onError: err => {
+      console.error("Error deleting exercise:", err)
+      toast.error("Error deleting exercise")
+    },
+    onCompleted: () => {
+      toast.success("Exercise deleted successfully")
+    }
+  })
+
+  const handleDeleteExercise = id => {
+    if (confirm("Are you sure you want to delete this exercise?")) {
+      deleteExercise({
+        variables: { input: { id } },
+        update: (cache, { data }) => {
+          if (data?.deleteExercise?.success) {
+            cache.modify({
+              fields: {
+                exercises(existingExerciseConnections = {}) {
+                  const { edges = [] } = existingExerciseConnections
+                  return {
+                    ...existingExerciseConnections,
+                    edges: edges.filter(
+                      edge => id !== edge.node.__ref.split(":")[1]
+                    )
+                  }
+                }
+              }
+            })
+          }
+        }
+      })
+    }
+  }
 
   return (
     <table className="w-full border-collapse rounded overflow-hidden shadow-sm">
@@ -36,9 +76,7 @@ function ExerciseTable({ exercises, ITEMS_PER_PAGE }) {
                 <button
                   className="text-red-500"
                   id={exercise.id}
-                  onClick={() => {
-                    alert(`Delete exercise ${exercise.id}`)
-                  }}>
+                  onClick={() => handleDeleteExercise(exercise.id)}>
                   Delete
                 </button>
               </div>
