@@ -85,7 +85,7 @@ export default function ExercisesPage() {
               </button>
             </div>
             <div>
-              <span>
+              <span className="text-xs font-thin">
                 Page {currentPage} of {totalPages}
               </span>
             </div>

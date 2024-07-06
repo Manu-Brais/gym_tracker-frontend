@@ -13,7 +13,6 @@ function ShowExercise() {
   if (error) return <p>Error: {error.message}</p>
 
   const { exercise } = data
-  console.log("exercise", exercise)
 
   return (
     <>
