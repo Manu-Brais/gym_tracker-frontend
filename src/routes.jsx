@@ -9,6 +9,7 @@ import LogInForm from "./components/logInForm.jsx"
 import GenerateReferralLink from "./components/GenerateReferralLink.jsx"
 import CreateExerciseForm from "./components/CreateExerciseForm"
 import ExercisesPage from "./pages/coach/exercises/ExercisesPage.jsx"
+import ShowExercise from "./pages/coach/exercises/ShowExercise.jsx"
 import ProfilePage from "./pages/user/profile/ProfilePage.jsx"
 import SubscriptionTestPage from "./pages/SubscriptionTestPage.jsx"
 
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
               {
                 path: "/exercises",
                 element: <ExercisesPage />
+              },
+              {
+                path: "/exercises/:id",
+                element: <ShowExercise />
               },
               {
                 path: "/generate-referral-link",
