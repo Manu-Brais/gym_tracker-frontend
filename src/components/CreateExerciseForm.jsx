@@ -1,9 +1,10 @@
-import React, { useState } from "react"
+import React from "react"
 import { useNavigate } from "react-router-dom"
 import { useFormik } from "formik"
 import { CreateExerciseSchema } from "./validation/CreateExerciseSchema"
 import { CREATE_EXERCISE_MUTATION } from "../graphql/mutations/createExercise"
-import useGraphQLMutation from "../hooks/useGraphQlMutation"
+import { EXERCISES_QUERY } from "../graphql/queries/coach/exercises"
+import { useMutation } from "@apollo/client"
 import { toast } from "react-toastify"
 import FormInput from "./FormInput"
 import Button from "./Button"
@@ -11,20 +12,29 @@ import Button from "./Button"
 const CreateExerciseForm = () => {
   const navigate = useNavigate()
 
-  const onCompleted = data => {
-    console.log(data.createExercise.exercise.videoUrl)
-    navigate("/")
-  }
-
-  const { execute } = useGraphQLMutation(
-    CREATE_EXERCISE_MUTATION,
-    data => onCompleted(data),
-    () => toast.success("Exercicio creado con éxito"),
-    () => toast.error("Erro ao crear o exercicio")
-  )
+  const [createExercise] = useMutation(CREATE_EXERCISE_MUTATION, {
+    refetchQueries: [
+      {
+        query: EXERCISES_QUERY,
+        variables: { first: 10, after: null, last: null, before: null }
+      }
+    ],
+    onError: err => {
+      console.error("Error creating the exercise:", err)
+      toast.error("Error creating the exercise")
+    },
+    onCompleted: () => {
+      toast.success("Exercise created successfully")
+      navigate("/")
+    }
+  })
 
   const handleSubmit = async values => {
-    await execute({ input: values })
+    await createExercise({ variables: { input: values } })
+  }
+
+  const handleFileChange = event => {
+    formik.setFieldValue("videoFile", event.currentTarget.files[0])
   }
 
   const formik = useFormik({
@@ -36,10 +46,6 @@ const CreateExerciseForm = () => {
     validationSchema: CreateExerciseSchema,
     onSubmit: handleSubmit
   })
-
-  const handleFileChange = event => {
-    formik.setFieldValue("videoFile", event.currentTarget.files[0])
-  }
 
   return (
     <form
@@ -57,7 +63,6 @@ const CreateExerciseForm = () => {
           onBlur={formik.handleBlur}
           value={formik.values.title}
         />
-        {/* Would be very nice if we include a text editor for the description and offer some kind of markdown support */}
         <FormInput
           type="textarea"
           id="description"

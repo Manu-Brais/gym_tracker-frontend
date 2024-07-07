@@ -8,8 +8,7 @@ export default function ExercisesPage() {
   const [currentPage, setCurrentPage] = useState(1)
 
   const { loading, error, data, fetchMore } = useQuery(EXERCISES_QUERY, {
-    variables: { first: ITEMS_PER_PAGE, after: null, last: null, before: null },
-    fetchPolicy: "network-only"
+    variables: { first: ITEMS_PER_PAGE, after: null, last: null, before: null }
   })
 
   if (error) return <p>Error: {error.message}</p>

@@ -9,7 +9,12 @@ function ExerciseTable({ exercises, ITEMS_PER_PAGE }) {
   const navigate = useNavigate()
 
   const [deleteExercise] = useMutation(DELETE_EXERCISE_MUTATION, {
-    refetchQueries: [{ query: EXERCISES_QUERY }],
+    refetchQueries: [
+      {
+        query: EXERCISES_QUERY,
+        variables: { first: 10, after: null, last: null, before: null }
+      }
+    ],
     onError: err => {
       console.error("Error deleting exercise:", err)
       toast.error("Error deleting exercise")
@@ -21,26 +26,7 @@ function ExerciseTable({ exercises, ITEMS_PER_PAGE }) {
 
   const handleDeleteExercise = id => {
     if (confirm("Are you sure you want to delete this exercise?")) {
-      deleteExercise({
-        variables: { input: { id } },
-        update: (cache, { data }) => {
-          if (data?.deleteExercise?.success) {
-            cache.modify({
-              fields: {
-                exercises(existingExerciseConnections = {}) {
-                  const { edges = [] } = existingExerciseConnections
-                  return {
-                    ...existingExerciseConnections,
-                    edges: edges.filter(
-                      edge => id !== edge.node.__ref.split(":")[1]
-                    )
-                  }
-                }
-              }
-            })
-          }
-        }
-      })
+      deleteExercise({ variables: { input: { id } } })
     }
   }
 
