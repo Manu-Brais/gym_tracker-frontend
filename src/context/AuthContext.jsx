@@ -1,7 +1,7 @@
 import React, { createContext, useState, useContext } from "react"
 import Cookies from "js-cookie"
 import { jwtDecode } from "jwt-decode"
-import { Icons, toast } from "react-toastify"
+import { toast } from "react-toastify"
 
 const AuthContext = createContext()
 

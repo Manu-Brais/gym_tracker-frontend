@@ -1,72 +1,115 @@
-import React, { useEffect } from "react";
-import { useFormik } from "formik";
-import { useQuery } from "@apollo/client";
-import { toast } from "react-toastify";
-import FormInput from "../../../components/FormInput";
-import Button from "../../../components/Button";
-import { FETCH_USER_DATA_QUERY } from "../../../graphql/queries/fetchUserData";
-import { UPDATE_USER_DATA_MUTATION } from "../../../graphql/mutations/updateUserData";
-import { UpdateUserDataSchema } from "../../../components/validation/UpdateUserDataSchema";
-import useGraphQLMutation from "../../../hooks/useGraphQlMutation";
+import React, { useEffect, useState } from "react"
+import { useFormik } from "formik"
+import { useQuery, useMutation } from "@apollo/client"
+import { toast } from "react-toastify"
+import FormInput from "../../../components/FormInput"
+import Button from "../../../components/Button"
+import { RotatingLines } from "react-loader-spinner"
+import { FETCH_USER_DATA_QUERY } from "../../../graphql/queries/fetchUserData"
+import { UPDATE_USER_DATA_MUTATION } from "../../../graphql/mutations/updateUserData"
+import { UpdateUserDataSchema } from "../../../components/validation/UpdateUserDataSchema"
 
 export default function ProfilePage() {
-  const { loading, error, data } = useQuery(FETCH_USER_DATA_QUERY);
+  const { loading, error, data } = useQuery(FETCH_USER_DATA_QUERY)
+  const [profilePicture, setProfilePicture] = useState(null)
 
-  const { execute } = useGraphQLMutation(
-    UPDATE_USER_DATA_MUTATION,
-    (data) => onCompletedMutation(data),
-    () => toast.success("Datos actualizados con éxito"),
-    () => toast.error("Error al guardar los datos de perfil")
-  );
+  const [updateUserData] = useMutation(UPDATE_USER_DATA_MUTATION, {
+    onCompleted: data => onCompletedMutation(data),
+    onError: () => toast.error("Error al guardar los datos de perfil")
+  })
 
-  const handleSubmit = async (values) => {
-    await execute({ input: values });
-  };
+  const handleSubmit = async values => {
+    await updateUserData({ variables: { input: values } })
+  }
 
   const formik = useFormik({
+    validationSchema: UpdateUserDataSchema,
+    onSubmit: handleSubmit,
     initialValues: {
       name: "",
       surname: "",
       phone: "",
       address: "",
-    },
-    validationSchema: UpdateUserDataSchema,
-    onSubmit: handleSubmit,
-  });
-
-  useEffect(() => {
-    if (data) {
-      const { authenticatable } = data.fetchUserData;
-      const { name, surname, phone, address } = authenticatable;
-      formik.setValues({
-        name: name,
-        surname: surname,
-        phone: phone,
-        address: address,
-      });
+      profilePicture: null
     }
-  }, [data]);
+  })
 
-  const onCompletedMutation = (data) => {
-    const { authenticatable } = data.updateUserData.userData;
-    const { name, surname, phone, address } = authenticatable;
+  const onCompletedMutation = data => {
+    const { authenticatable } = data.updateUserData.userData
+    const { name, surname, phone, address, avatarUrl } = authenticatable
     formik.setValues({
       name: name,
       surname: surname,
       phone: phone,
-      address: address,
-    });
-  };
+      address: address
+    })
+    console.log("AVATAR", avatarUrl)
+    setProfilePicture(`http://localhost:3000${avatarUrl}`)
+    toast.success("Profile data saved successfully")
+  }
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <p>Error: {error.message}</p>;
+  const handleFileChange = event => {
+    const file = event.currentTarget.files[0]
+    if (file) {
+      formik.setFieldValue("profilePicture", file)
+      const url = URL.createObjectURL(file)
+      setProfilePicture(url)
+    }
+  }
+
+  useEffect(() => {
+    if (data) {
+      const { authenticatable } = data.fetchUserData
+      const { name, surname, phone, address, avatarUrl } = authenticatable
+      formik.setValues({
+        name: name,
+        surname: surname,
+        phone: phone,
+        address: address
+      })
+      setProfilePicture(`http://localhost:3000${avatarUrl}`)
+    }
+  }, [data])
+
+  if (loading)
+    return (
+      <div className="flex items-center justify-center h-96">
+        <RotatingLines
+          width={30}
+          height={30}
+          strokeColor="black"
+          strokeWidth="5"
+          ariaLabel="three-dots-loading"
+          visible={true}
+        />
+      </div>
+    )
+  if (error) return <p>Error: {error.message}</p>
 
   return (
     <form
       onSubmit={formik.handleSubmit}
-      className="flex flex-col lg:flex-row rounded overflow-hidden shadow-md shadow-black-500 bg-slate-50/80"
-    >
-      <div className="flex flex-col justify-end gap-3 w-full px-10 py-8 lg:order-1 lg:p-16 lg:items-center lg:justify-between">
+      className="flex flex-col w-[90%] sm:w-1/2 min-w-[500px] mx-auto rounded overflow-hidden shadow-md shadow-black-500 bg-slate-50/80">
+      <div className="flex flex-col justify-end gap-3 w-full px-10 py-8 lg:order-1 lg:p-16 items-center lg:justify-between">
+        <div className="relative flex items-center justify-center w-32 h-32 bg-white rounded-full overflow-hidden hover:bg-gray-200 cursor-pointer">
+          {profilePicture ? (
+            <img
+              src={profilePicture}
+              alt="profile"
+              className="w-32 h-32 rounded-full object-cover"
+            />
+          ) : (
+            <div className="text-gray-500">Upload</div>
+          )}
+          <input
+            id="profilePicture"
+            name="profilePicture"
+            type="file"
+            accept="image/*"
+            className="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer"
+            onChange={handleFileChange}
+          />
+        </div>
         <div className="flex flex-col gap-[0.75rem] mb-4 w-full">
           <FormInput
             id="name"
@@ -122,5 +165,5 @@ export default function ProfilePage() {
         </Button>
       </div>
     </form>
-  );
+  )
 }
