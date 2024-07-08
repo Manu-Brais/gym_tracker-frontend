@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client"
 
 export const FETCH_USER_DATA_QUERY = gql`
-  query fetchUserData{
+  query fetchUserData {
     fetchUserData {
       email
       type
@@ -12,6 +12,7 @@ export const FETCH_USER_DATA_QUERY = gql`
           surname
           phone
           address
+          avatarUrl
         }
         ... on Client {
           id
@@ -19,6 +20,7 @@ export const FETCH_USER_DATA_QUERY = gql`
           surname
           phone
           address
+          avatarUrl
         }
       }
     }

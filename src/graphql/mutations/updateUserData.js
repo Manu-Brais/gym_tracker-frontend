@@ -11,6 +11,7 @@ export const UPDATE_USER_DATA_MUTATION = gql`
             surname
             phone
             address
+            avatarUrl
           }
           ... on Client {
             id
@@ -18,10 +19,10 @@ export const UPDATE_USER_DATA_MUTATION = gql`
             surname
             phone
             address
+            avatarUrl
           }
         }
       }
     }
   }
 `
-
