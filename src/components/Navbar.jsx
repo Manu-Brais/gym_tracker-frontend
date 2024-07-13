@@ -33,11 +33,6 @@ export default function Navbar() {
                 Get Referral Link
               </button>
             </Link>
-            <Link to="/create-exercise">
-              <button className="text-lg font-light text-gray-600">
-                Create New Exercise
-              </button>
-            </Link>
             <Link to="/exercises">
               <button className="text-lg font-light text-gray-600">
                 Exercises

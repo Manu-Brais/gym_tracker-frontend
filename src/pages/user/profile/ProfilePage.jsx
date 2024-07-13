@@ -5,9 +5,9 @@ import { toast } from "react-toastify"
 import FormInput from "../../../components/FormInput"
 import Button from "../../../components/Button"
 import { RotatingLines } from "react-loader-spinner"
+import { UpdateUserDataSchema } from "../../../components/validation/UpdateUserDataSchema"
 import { FETCH_USER_DATA_QUERY } from "../../../graphql/queries/fetchUserData"
 import { UPDATE_USER_DATA_MUTATION } from "../../../graphql/mutations/updateUserData"
-import { UpdateUserDataSchema } from "../../../components/validation/UpdateUserDataSchema"
 
 export default function ProfilePage() {
   const { loading, error, data } = useQuery(FETCH_USER_DATA_QUERY)

@@ -13,29 +13,8 @@ const FormInput = ({
   placeholder,
   type = "text"
 }) => {
-  const textareaRef = useRef(null)
-
-  useEffect(() => {
-    if (type === "textarea" && textareaRef.current) {
-      const textarea = textareaRef.current
-      textarea.style.height = "auto"
-      textarea.style.height = textarea.scrollHeight + "px"
-    }
-  }, [value, type])
-
-  const handleInputChange = e => {
-    if (type === "textarea" && textareaRef.current) {
-      const textarea = textareaRef.current
-      textarea.style.height = "auto"
-      textarea.style.height = textarea.scrollHeight + "px"
-    }
-    if (onChange) {
-      onChange(e)
-    }
-  }
-
   return (
-    <div className="">
+    <div>
       <label
         htmlFor={id}
         className="block text-pretty text font-bold text-gray-500">
@@ -45,17 +24,16 @@ const FormInput = ({
         <textarea
           id={id}
           name={name}
-          onChange={handleInputChange}
+          onChange={onChange}
           onBlur={onBlur}
           value={value}
           placeholder={placeholder}
-          ref={textareaRef}
+          rows="10"
           className={`mt-1 block w-full px-3 py-2 border bg-white/25 border-slate-800/15 rounded focus:outline-none placeholder:text-gray-300 placeholder:font-thin placeholder:italic ${
             touched && error
               ? "border-red-500 focus:border-red-500"
               : "border-gray-300 focus:border-indigo-500"
           }`}
-          rows="10"
         />
       ) : (
         <input
