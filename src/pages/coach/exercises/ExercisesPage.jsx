@@ -1,19 +1,20 @@
-import React, { useState, useCallback } from "react"
+import React, { useState, useCallback, useEffect } from "react"
 import { useQuery } from "@apollo/client"
 import ExerciseTable from "../../../components/ExerciseTable"
 import debounce from "lodash.debounce"
-import { Link, useNavigate } from "react-router-dom"
+import { RightArrow, LeftArrow } from "../../../components/Icons"
 import CreateExerciseForm from "../../../components/CreateExerciseForm"
 import { EXERCISES_QUERY } from "../../../graphql/queries/coach/exercises"
 
 // TODO: define this constant in a shared file
 // in order to use the same ITEMS_PER_PAGE on each
 // component that needs it
-const ITEMS_PER_PAGE = 3
+const ITEMS_PER_PAGE = 5
 const DEBOUNCE_DELAY = 300
 
 export default function ExercisesPage() {
-  const [currentPage, setCurrentPage] = useState(1)
+  const savedPage = parseInt(localStorage.getItem("currentPage"), 10) || 1
+  const [currentPage, setCurrentPage] = useState(savedPage)
   const [hidden, setHidden] = useState("hidden")
   const { loading, error, data, fetchMore } = useQuery(EXERCISES_QUERY, {
     variables: {
@@ -93,7 +94,7 @@ export default function ExercisesPage() {
     setHidden(hidden === "hidden" ? "" : "hidden")
   }
 
-  const handleExerciseCreated = () => {
+  const handleExerciseMutation = () => {
     setCurrentPage(1)
     fetchMore({
       first: ITEMS_PER_PAGE,
@@ -103,6 +104,10 @@ export default function ExercisesPage() {
       search: ""
     })
   }
+
+  useEffect(() => {
+    localStorage.setItem("currentPage", currentPage)
+  }, [currentPage])
 
   const totalPages = Math.ceil(totalCount / ITEMS_PER_PAGE)
 
@@ -118,14 +123,14 @@ export default function ExercisesPage() {
         <>
           <div
             className={`absolute right-0 top-0 left-0 bottom-0 bg-gray-900 bg-opacity-50 z-50 ${hidden}`}>
-            <div className="relative mt-24 mx-auto w-1/2 bg-white p-8 rounded-lg shadow-lg">
+            <div className="relative mt-24 mx-auto w-full bg-white p-8 rounded-lg shadow-lg max-w-[800px] min-w-[400px]">
               <h2 className="text-2xl font-bold mb-4">Create Exercise</h2>
               <button
                 className="absolute top-2 right-2 text-2xl text-gray-500 mr-2"
                 onClick={handleModal}>
                 &times;
               </button>
-              <CreateExerciseForm onExerciseCreated={handleExerciseCreated} />
+              <CreateExerciseForm onExerciseCreated={handleExerciseMutation} />
             </div>
           </div>
           <section className="flex justify-between items-center mb-4 gap-4">
@@ -135,27 +140,33 @@ export default function ExercisesPage() {
               placeholder="Search exercises"
               onChange={handleSearch}
             />
-            <div className="grow flex justify-center mb-4 gap-2">
+            <div className="grow flex justify-between items-center mb-4 gap-2">
               <button
-                className="rounded p-2 w-24 bg-slate-100 text-blue-500"
-                onClick={handlePreviousPage}
-                disabled={!pageInfo.hasPreviousPage}>
-                Previous
-              </button>
-              <button
-                className="rounded p-2 w-24 bg-slate-100 text-blue-500"
-                onClick={handleNextPage}
-                disabled={!pageInfo.hasNextPage}>
-                Next
-              </button>
-              <button
-                className="rounded p-2 w-24 bg-slate-100 text-green-500"
+                className="rounded p-2 ml-4 bg-slate-100 text-green-800 shadow hover:bg-slate-200 hover:cursor-pointer active:bg-slate-300 active:shadow-inner transition-all duration-200"
                 onClick={handleModal}>
                 Create Exercise
               </button>
+              <div className="flex gap-3">
+                <button
+                  className="rounded-full bg-slate-100 w-fit h-fit p-2 shadow hover:bg-slate-200 hover:cursor-pointer active:bg-slate-300 active:shadow-inner transition-all duration-200"
+                  onClick={handlePreviousPage}
+                  disabled={!pageInfo.hasPreviousPage}>
+                  <LeftArrow className="w-7 text-black" />
+                </button>
+                <button
+                  className="rounded-full bg-slate-100 w-fit h-fit p-2 shadow hover:bg-slate-200 hover:cursor-pointer active:bg-slate-300 active:shadow-inner transition-all duration-200"
+                  onClick={handleNextPage}
+                  disabled={!pageInfo.hasNextPage}>
+                  <RightArrow className="w-7 text-black" />
+                </button>
+              </div>
             </div>
           </section>
-          <ExerciseTable exercises={edges} ITEMS_PER_PAGE={ITEMS_PER_PAGE} />
+          <ExerciseTable
+            exercises={edges}
+            onExerciseDeleted={handleExerciseMutation}
+            ITEMS_PER_PAGE={ITEMS_PER_PAGE}
+          />
           <div className="flex justify-end items-center mt-4 mr-2">
             <span className="text-xs font-thin text-gray-400">
               Page {currentPage} of {totalPages}

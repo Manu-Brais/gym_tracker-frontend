@@ -5,7 +5,7 @@ import { toast } from "react-toastify"
 import { DELETE_EXERCISE_MUTATION } from "../graphql/mutations/deleteExercise"
 import { EXERCISES_QUERY } from "../graphql/queries/coach/exercises"
 
-function ExerciseTable({ exercises, ITEMS_PER_PAGE }) {
+function ExerciseTable({ exercises, onExerciseDeleted, ITEMS_PER_PAGE }) {
   const navigate = useNavigate()
 
   // TODO: Improve the exercise deletion process
@@ -29,6 +29,7 @@ function ExerciseTable({ exercises, ITEMS_PER_PAGE }) {
     },
     onCompleted: () => {
       toast.success("Exercise deleted successfully")
+      onExerciseDeleted()
     }
   })
 

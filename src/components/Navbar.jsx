@@ -38,9 +38,9 @@ export default function Navbar() {
                 Exercises
               </button>
             </Link>
-            <Link to={`/profile`}>
-              <button className="text-lg font-semibold text-gray-600">
-                Mi Perfil
+            <Link to="/profile">
+              <button className="text-lg font-light text-gray-600">
+                My profile
               </button>
             </Link>
           </>
