@@ -1,18 +1,26 @@
 import React from "react"
 import { useNavigate } from "react-router-dom"
-import { DELETE_EXERCISE_MUTATION } from "../graphql/mutations/deleteExercise"
 import { useMutation } from "@apollo/client"
-import { EXERCISES_QUERY } from "../graphql/queries/coach/exercises"
 import { toast } from "react-toastify"
+import { DELETE_EXERCISE_MUTATION } from "../graphql/mutations/deleteExercise"
+import { EXERCISES_QUERY } from "../graphql/queries/coach/exercises"
 
 function ExerciseTable({ exercises, ITEMS_PER_PAGE }) {
   const navigate = useNavigate()
 
+  // TODO: Improve the exercise deletion process
+  // - update the currentPage number state when deleting an exercise
   const [deleteExercise] = useMutation(DELETE_EXERCISE_MUTATION, {
     refetchQueries: [
       {
         query: EXERCISES_QUERY,
-        variables: { first: 10, after: null, last: null, before: null }
+        variables: {
+          first: 3,
+          after: null,
+          last: null,
+          before: null,
+          search: ""
+        }
       }
     ],
     onError: err => {

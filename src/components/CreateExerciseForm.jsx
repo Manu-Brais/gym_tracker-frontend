@@ -9,14 +9,20 @@ import { toast } from "react-toastify"
 import FormInput from "./FormInput"
 import Button from "./Button"
 
-const CreateExerciseForm = () => {
+const CreateExerciseForm = ({ onExerciseCreated }) => {
   const navigate = useNavigate()
 
   const [createExercise] = useMutation(CREATE_EXERCISE_MUTATION, {
     refetchQueries: [
       {
         query: EXERCISES_QUERY,
-        variables: { first: 10, after: null, last: null, before: null }
+        variables: {
+          first: 3,
+          after: null,
+          last: null,
+          before: null,
+          search: ""
+        }
       }
     ],
     onError: err => {
@@ -25,12 +31,14 @@ const CreateExerciseForm = () => {
     },
     onCompleted: () => {
       toast.success("Exercise created successfully")
-      navigate("/")
+      onExerciseCreated()
+      navigate("/exercises")
     }
   })
 
   const handleSubmit = async values => {
     await createExercise({ variables: { input: values } })
+    formik.resetForm()
   }
 
   const handleFileChange = event => {
@@ -50,7 +58,7 @@ const CreateExerciseForm = () => {
   return (
     <form
       onSubmit={formik.handleSubmit}
-      className="flex flex-col mx-auto mt-12 w-full min-h-96 max-w-[750px] rounded overflow-hidden shadow-md shadow-black-500 bg-slate-50/80">
+      className="flex flex-col mx-auto mt-12 w-full min-h-96 max-w-[750px] rounded overflow-hidden shadow-md shadow-black-500 bg-white">
       <div className="flex flex-col gap-[0.75rem] mb-4 w-full px-10 py-8">
         <FormInput
           id="title"
