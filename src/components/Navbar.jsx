@@ -28,11 +28,6 @@ export default function Navbar() {
               onClick={handleClick}>
               Logout
             </button>
-            <Link to="/generate-referral-link">
-              <button className="text-lg font-light text-gray-600">
-                Get Referral Link
-              </button>
-            </Link>
             <Link to="/exercises">
               <button className="text-lg font-light text-gray-600">
                 Exercises

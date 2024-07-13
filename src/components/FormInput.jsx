@@ -1,6 +1,3 @@
-import React, { useEffect, useRef } from "react"
-import styles from "./FormInput.module.css"
-
 const FormInput = ({
   id,
   label,
