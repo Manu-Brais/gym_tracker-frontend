@@ -34,10 +34,6 @@ const router = createBrowserRouter([
                 element: <ShowExercise />
               },
               {
-                path: "/generate-referral-link",
-                element: <GenerateReferralLink />
-              },
-              {
                 path: "/create-exercise",
                 element: <CreateExerciseForm />
               }

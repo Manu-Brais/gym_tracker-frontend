@@ -1,169 +1,86 @@
-import React, { useEffect, useState } from "react"
-import { useFormik } from "formik"
-import { useQuery, useMutation } from "@apollo/client"
-import { toast } from "react-toastify"
-import FormInput from "../../../components/FormInput"
-import Button from "../../../components/Button"
-import { RotatingLines } from "react-loader-spinner"
-import { UpdateUserDataSchema } from "../../../components/validation/UpdateUserDataSchema"
+import React, { useState } from "react"
+import ProfileForm from "../../../components/ProfileForm"
+import { useQuery } from "@apollo/client"
+import { Phone, Location, Edit } from "../../../components/Icons"
+import Loader from "../../../components/Loader"
 import { FETCH_USER_DATA_QUERY } from "../../../graphql/queries/fetchUserData"
-import { UPDATE_USER_DATA_MUTATION } from "../../../graphql/mutations/updateUserData"
+import { GET_REFERRAL_TOKEN_QUERY } from "../../../graphql/queries/getReferralToken"
 
 export default function ProfilePage() {
+  const [hidden, setHidden] = useState("hidden")
+  const [imageLoaded, setImageLoaded] = useState(false)
   const { loading, error, data } = useQuery(FETCH_USER_DATA_QUERY)
-  const [profilePicture, setProfilePicture] = useState(null)
+  const {
+    loading: loadingReferral,
+    error: errorReferral,
+    data: dataReferral
+  } = useQuery(GET_REFERRAL_TOKEN_QUERY)
 
-  const [updateUserData] = useMutation(UPDATE_USER_DATA_MUTATION, {
-    onCompleted: data => onCompletedMutation(data),
-    onError: () => toast.error("Error al guardar los datos de perfil")
-  })
+  const isLoading = loading && !imageLoaded
 
-  const handleSubmit = async values => {
-    await updateUserData({ variables: { input: values } })
-  }
+  if (isLoading) return <Loader />
 
-  const formik = useFormik({
-    validationSchema: UpdateUserDataSchema,
-    onSubmit: handleSubmit,
-    initialValues: {
-      name: "",
-      surname: "",
-      phone: "",
-      address: "",
-      profilePicture: null
-    }
-  })
-
-  const onCompletedMutation = data => {
-    const { authenticatable } = data.updateUserData.userData
-    const { name, surname, phone, address, avatarUrl } = authenticatable
-    formik.setValues({
-      name: name,
-      surname: surname,
-      phone: phone,
-      address: address
-    })
-    console.log("AVATAR", avatarUrl)
-    setProfilePicture(`http://localhost:3000${avatarUrl}`)
-    toast.success("Profile data saved successfully")
-  }
-
-  const handleFileChange = event => {
-    const file = event.currentTarget.files[0]
-    if (file) {
-      formik.setFieldValue("profilePicture", file)
-      const url = URL.createObjectURL(file)
-      setProfilePicture(url)
-    }
-  }
-
-  useEffect(() => {
-    if (data) {
-      const { authenticatable } = data.fetchUserData
-      const { name, surname, phone, address, avatarUrl } = authenticatable
-      formik.setValues({
-        name: name,
-        surname: surname,
-        phone: phone,
-        address: address
-      })
-      setProfilePicture(`http://localhost:3000${avatarUrl}`)
-    }
-  }, [data])
-
-  if (loading)
-    return (
-      <div className="flex items-center justify-center h-96">
-        <RotatingLines
-          width={30}
-          height={30}
-          strokeColor="black"
-          strokeWidth="5"
-          ariaLabel="three-dots-loading"
-          visible={true}
-        />
-      </div>
-    )
   if (error) return <p>Error: {error.message}</p>
 
+  const { authenticatable } = data?.fetchUserData
+  const { name, surname, phone, address, avatarUrl } = authenticatable || {}
+  const referralToken = dataReferral?.getReferral.referralToken
+
+  const handleModal = () => {
+    setHidden(hidden === "hidden" ? "" : "hidden")
+  }
+
   return (
-    <form
-      onSubmit={formik.handleSubmit}
-      className="flex flex-col w-[90%] sm:w-1/2 min-w-[500px] mx-auto rounded overflow-hidden shadow-md shadow-black-500 bg-slate-50/80">
-      <div className="flex flex-col justify-end gap-3 w-full px-10 py-8 lg:order-1 lg:p-16 items-center lg:justify-between">
-        <div className="relative flex items-center justify-center w-32 h-32 bg-white rounded-full overflow-hidden hover:bg-gray-200 cursor-pointer">
-          {profilePicture ? (
-            <img
-              src={profilePicture}
-              alt="profile"
-              className="w-32 h-32 rounded-full object-cover"
-            />
-          ) : (
-            <div className="text-gray-500">Upload</div>
-          )}
-          <input
-            id="profilePicture"
-            name="profilePicture"
-            type="file"
-            accept="image/*"
-            className="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer"
-            onChange={handleFileChange}
-          />
+    <div className="flex flex-col min-h-screen m-16">
+      <div
+        className={`absolute right-0 top-0 left-0 bottom-0 bg-gray-900 bg-opacity-50 z-50 ${hidden}`}>
+        <div className="relative mt-24 mx-auto w-full bg-white p-8 rounded-lg shadow-lg max-w-[800px] min-w-[400px]">
+          <button
+            className="absolute top-2 right-2 text-2xl text-gray-500 mr-2"
+            onClick={handleModal}>
+            &times;
+          </button>
+          <ProfileForm />
         </div>
-        <div className="flex flex-col gap-[0.75rem] mb-4 w-full">
-          <FormInput
-            id="name"
-            label="Name"
-            name="name"
-            placeholder="Jhon"
-            error={formik.errors.name}
-            touched={formik.touched.name}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.name}
-            type="name"
-          />
-          <FormInput
-            id="surname"
-            label="Surname"
-            name="surname"
-            placeholder="Doe"
-            error={formik.errors.surname}
-            touched={formik.touched.surname}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.surname}
-            type="surname"
-          />
-          <FormInput
-            id="phone"
-            label="Phone"
-            name="phone"
-            placeholder="675123987"
-            error={formik.errors.phone}
-            touched={formik.touched.phone}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.phone}
-            type="phone"
-          />
-          <FormInput
-            id="address"
-            label="Address"
-            name="address"
-            placeholder="C/ Santiago de Chile, 9"
-            error={formik.errors.address}
-            touched={formik.touched.address}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.address}
-            type="address"
-          />
-        </div>
-        <Button type="submit" isLoading={formik.isSubmitting}>
-          Save
-        </Button>
       </div>
-    </form>
+
+      <section className="flex">
+        <div
+          className={`flex-shrink-0 w-56 h-56 bg${
+            imageLoaded ? "-transparent" : "-gray-200"
+          }`}>
+          <img
+            src={`http://localhost:3000${avatarUrl}`}
+            alt="Profile"
+            className="w-56 h-56 rounded-lg object-cover shadow-slate-700 shadow"
+            onLoad={() => setImageLoaded(true)}
+          />
+        </div>
+        <div className="flex flex-col justify-center gap-4 ml-8">
+          <p className="flex gap-6 justify-start items-center text-3xl font-semibold">
+            {name} {surname}
+            <button
+              className="rounded-full bg-gray-100 p-2 shadow shadow-slate-400 hover:bg-slate-200 hover:cursor-pointer active:bg-slate-300 active:shadow-inner transition-all duration-200"
+              onClick={handleModal}>
+              <Edit className="w-4 h-4 text-gray-700" />
+            </button>
+          </p>
+          <p className="flex gap-2 text-xl font-thin text-gray-700">
+            <Phone className="w-6 h-6 text-gray-500" />
+            {phone}
+          </p>
+          <p className="flex gap-2 text-xl font-thin text-gray-700">
+            <Location className="w-6 h-6 text-gray-500" />
+            {address}
+          </p>
+          <p className="text-xl font-thin text-gray-700">
+            <span className="text-gray-500">Referral Link:</span>{" "}
+            <span className="text-blue-500 underline hover:text-blue-700 hover:cursor-pointer">
+              {`https://www.gym-trackr/signup?referral=${referralToken}`}
+            </span>
+          </p>
+        </div>
+      </section>
+    </div>
   )
 }
