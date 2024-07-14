@@ -17,16 +17,18 @@ function ShowExercise() {
   return (
     <>
       <section className="flex flex-col w-[555px] mx-auto p-4 gap-3 justify-between mb-4 border rounded">
-        <video
-          controls
-          src={`http://localhost:3000${exercise.videoUrl}`}
-          className="w-full h-auto max-w-lg rounded-md overflow-hidden shadow-lg"
-          poster={
-            exercise.videoThumbnailUrl
-              ? `http://localhost:3000${exercise.videoThumbnailUrl}`
-              : null
-          }
-        />
+        <div className="w-full relative" style={{ paddingTop: '56.25%' }}>
+          <video
+            controls
+            src={`http://localhost:3000${exercise.videoUrl}`}
+            className="absolute top-0 left-0 w-full h-full rounded-md object-cover shadow-lg"
+            poster={
+              exercise.videoThumbnailUrl
+                ? `http://localhost:3000${exercise.videoThumbnailUrl}`
+                : null
+            }
+          />
+        </div>
         <h1 className="text-2xl font-bold mb-4">{exercise.title}</h1>
         <div className="text-pretty mb-4">{exercise.description}</div>
         <a

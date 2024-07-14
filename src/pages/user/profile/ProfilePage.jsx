@@ -44,7 +44,7 @@ export default function ProfilePage() {
         </div>
       </div>
 
-      <section className="flex">
+      <section className="flex justify-center">
         <div
           className={`flex-shrink-0 w-56 h-56 bg${
             imageLoaded ? "-transparent" : "-gray-200"
