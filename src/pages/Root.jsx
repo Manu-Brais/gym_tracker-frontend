@@ -5,9 +5,9 @@ import Navbar from "../components/Navbar"
 
 export default function Root() {
   return (
-    <main className="layout min-h-full">
+    <main className="min-h-full w-full">
       <Navbar />
-      <div className="pt-20 w-full">
+      <div className="pt-20 w-full h-full">
         <Outlet />
       </div>
       <ToastContainer

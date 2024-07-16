@@ -6,12 +6,13 @@ import FormInput from "../components/FormInput"
 import Button from "../components/Button"
 import Loader from "../components/Loader"
 import { UpdateUserDataSchema } from "../components/validation/UpdateUserDataSchema"
+import avatarPlaceholderImage from "../../public/avatar_placeholder.png"
 import { FETCH_USER_DATA_QUERY } from "../graphql/queries/fetchUserData"
 import { UPDATE_USER_DATA_MUTATION } from "../graphql/mutations/updateUserData"
 
 function ProfileForm() {
   const { loading, error, data } = useQuery(FETCH_USER_DATA_QUERY)
-  const [profilePicture, setProfilePicture] = useState(null)
+  const [profilePicture, setProfilePicture] = useState(avatarPlaceholderImage)
 
   const [updateUserData] = useMutation(UPDATE_USER_DATA_MUTATION, {
     onCompleted: data => onCompletedMutation(data),
@@ -30,7 +31,7 @@ function ProfileForm() {
       surname: "",
       phone: "",
       address: "",
-      profilePicture: null
+      profilePicture: ""
     }
   })
 
@@ -44,7 +45,9 @@ function ProfileForm() {
       address: address
     })
     console.log("AVATAR", avatarUrl)
-    setProfilePicture(`http://localhost:3000${avatarUrl}`)
+    setProfilePicture(
+      `http://localhost:3000${avatarUrl}` || avatarPlaceholderImage
+    )
     toast.success("Profile data saved successfully")
   }
 
@@ -67,7 +70,9 @@ function ProfileForm() {
         phone: phone,
         address: address
       })
-      setProfilePicture(`http://localhost:3000${avatarUrl}`)
+      setProfilePicture(
+        avatarUrl ? `http://localhost:3000${avatarUrl}` : avatarPlaceholderImage
+      )
     }
   }, [data])
 
@@ -76,18 +81,14 @@ function ProfileForm() {
   return (
     <form
       onSubmit={formik.handleSubmit}
-      className="flex flex-col w-full mx-auto rounded overflow-hidden shadow-md shadow-black-500 bg-slate-50/80">
-      <div className="flex flex-col justify-end gap-3 w-full px-10 py-8 lg:order-1 lg:p-16 items-center lg:justify-between">
-        <div className="relative flex items-center justify-center w-32 h-32 bg-white rounded-full overflow-hidden hover:bg-gray-200 cursor-pointer">
-          {profilePicture ? (
-            <img
-              src={profilePicture}
-              alt="profile"
-              className="w-32 h-32 rounded-full object-cover"
-            />
-          ) : (
-            <div className="text-gray-500">Upload</div>
-          )}
+      className="flex flex-col w-full mx-auto rounded overflow-hidden">
+      <div className="flex flex-col justify-end gap-3 w-full items-center lg:justify-between overflow-hidden">
+        <div className="relative flex items-center justify-center w-48 h-48 bg-white rounded-full overflow-hidden hover:bg-gray-200 cursor-pointer">
+          <img
+            src={profilePicture}
+            alt="profile"
+            className="w-48 h-48 rounded-full object-cover"
+          />
           <input
             id="profilePicture"
             name="profilePicture"
