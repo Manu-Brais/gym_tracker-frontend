@@ -15,9 +15,9 @@ function ShowExercise() {
   const { exercise } = data
 
   return (
-    <>
+    <div className="h-full w-full flex justify-center items-center">
       <section className="flex flex-col w-[555px] mx-auto p-4 gap-3 justify-between mb-4 border rounded">
-        <div className="w-full relative" style={{ paddingTop: '56.25%' }}>
+        <div className="w-full relative pt-[56.25%]">
           <video
             controls
             src={`http://localhost:3000${exercise.videoUrl}`}
@@ -37,7 +37,7 @@ function ShowExercise() {
           Go back
         </a>
       </section>
-    </>
+    </div>
   )
 }
 

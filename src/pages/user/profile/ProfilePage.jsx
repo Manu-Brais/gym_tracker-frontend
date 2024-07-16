@@ -31,9 +31,9 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="flex flex-col min-h-screen m-16">
+    <div className="flex flex-col h-full m-16">
       <div
-        className={`absolute right-0 top-0 left-0 bottom-0 bg-gray-900 bg-opacity-50 z-50 ${hidden}`}>
+        className={`absolute right-0 top-0 left-0 bottom-0 bg-gray-900 bg-opacity-50 z-50 ${hidden} overflow-hidden`}>
         <div className="relative mt-24 mx-auto w-full bg-white p-8 rounded-lg shadow-lg max-w-[800px] min-w-[400px]">
           <button
             className="absolute top-2 right-2 text-2xl text-gray-500 mr-2"
@@ -50,7 +50,11 @@ export default function ProfilePage() {
             imageLoaded ? "-transparent" : "-gray-200"
           }`}>
           <img
-            src={`http://localhost:3000${avatarUrl}`}
+            src={
+              avatarUrl
+                ? `http://localhost:3000${avatarUrl}`
+                : "http://localhost:4000/avatar_placeholder.png"
+            }
             alt="Profile"
             className="w-56 h-56 rounded-lg object-cover shadow-slate-700 shadow"
             onLoad={() => setImageLoaded(true)}
@@ -58,7 +62,9 @@ export default function ProfilePage() {
         </div>
         <div className="flex flex-col justify-center gap-4 ml-8">
           <p className="flex gap-6 justify-start items-center text-3xl font-semibold">
-            {name} {surname}
+            {name && surname
+              ? `${name} ${surname}`
+              : " Add your personal data "}
             <button
               className="rounded-full bg-gray-100 p-2 shadow shadow-slate-400 hover:bg-slate-200 hover:cursor-pointer active:bg-slate-300 active:shadow-inner transition-all duration-200"
               onClick={handleModal}>
@@ -67,11 +73,20 @@ export default function ProfilePage() {
           </p>
           <p className="flex gap-2 text-xl font-thin text-gray-700">
             <Phone className="w-6 h-6 text-gray-500" />
+            {phone && phone.length > 0 ? (
+              phone
+            ) : (
+              <span className="italic">000 000 000</span>
+            )}
             {phone}
           </p>
           <p className="flex gap-2 text-xl font-thin text-gray-700">
             <Location className="w-6 h-6 text-gray-500" />
-            {address}
+            {address && address.length > 0 ? (
+              address
+            ) : (
+              <span className="italic">Evergreen Terrace</span>
+            )}
           </p>
           <p className="text-xl font-thin text-gray-700">
             <span className="text-gray-500">Referral Link:</span>{" "}
