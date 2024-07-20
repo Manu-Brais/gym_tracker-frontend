@@ -10,6 +10,7 @@ import CreateExerciseForm from "./components/CreateExerciseForm"
 import ExercisesPage from "./pages/coach/exercises/ExercisesPage.jsx"
 import ShowExercise from "./pages/coach/exercises/ShowExercise.jsx"
 import ProfilePage from "./pages/user/profile/ProfilePage.jsx"
+import ClientsPage from "./pages/coach/clients/ClientsPage.jsx"
 
 const router = createBrowserRouter([
   {
@@ -34,6 +35,10 @@ const router = createBrowserRouter([
               {
                 path: "/create-exercise",
                 element: <CreateExerciseForm />
+              },
+              {
+                path: "/clients",
+                element: <ClientsPage />
               }
             ]
           },

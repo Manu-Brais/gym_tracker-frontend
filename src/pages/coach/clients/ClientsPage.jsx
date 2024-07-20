@@ -1,11 +1,10 @@
 import React, { useState, useCallback, useEffect } from "react"
 import { useQuery } from "@apollo/client"
-import ExercisesTable from "../../../components/ExercisesTable"
+import ClientsTable from "../../../components/ClientsTable"
 import debounce from "lodash.debounce"
 import { RightArrow, LeftArrow } from "../../../components/Icons"
-import CreateExerciseForm from "../../../components/CreateExerciseForm"
 import Loader from "../../../components/Loader"
-import { EXERCISES_QUERY } from "../../../graphql/queries/coach/exercises"
+import { GET_CLIENTS_QUERY } from "../../../graphql/queries/coach/clients"
 
 // TODO: define this constant in a shared file
 // in order to use the same ITEMS_PER_PAGE on each
@@ -13,11 +12,11 @@ import { EXERCISES_QUERY } from "../../../graphql/queries/coach/exercises"
 const ITEMS_PER_PAGE = 5
 const DEBOUNCE_DELAY = 300
 
-export default function ExercisesPage() {
+export default function ClientsPage() {
   const savedPage = parseInt(localStorage.getItem("currentPage"), 10) || 1
   const [currentPage, setCurrentPage] = useState(savedPage)
-  const [hidden, setHidden] = useState("hidden")
-  const { loading, error, data, fetchMore } = useQuery(EXERCISES_QUERY, {
+  //   const [hidden, setHidden] = useState("hidden")
+  const { loading, error, data, fetchMore } = useQuery(GET_CLIENTS_QUERY, {
     variables: {
       first: ITEMS_PER_PAGE,
       after: null,
@@ -27,10 +26,10 @@ export default function ExercisesPage() {
     }
   })
 
-  const { exercises } = data || {}
-  const edges = exercises?.edges || []
-  const pageInfo = exercises?.pageInfo || {}
-  const totalCount = exercises?.totalCount || 0
+  const { clients } = data || {}
+  const edges = clients?.edges || []
+  const pageInfo = clients?.pageInfo || {}
+  const totalCount = clients?.totalCount || 0
 
   // This function is debounced to avoid making a request on every keystroke
   const debouncedFetchMore = useCallback(
@@ -89,21 +88,6 @@ export default function ExercisesPage() {
     })
   }
 
-  const handleModal = () => {
-    setHidden(hidden === "hidden" ? "" : "hidden")
-  }
-
-  const handleExerciseMutation = () => {
-    setCurrentPage(1)
-    fetchMore({
-      first: ITEMS_PER_PAGE,
-      after: null,
-      last: null,
-      before: null,
-      search: ""
-    })
-  }
-
   useEffect(() => {
     localStorage.setItem("currentPage", currentPage)
   }, [currentPage])
@@ -113,33 +97,16 @@ export default function ExercisesPage() {
   if (loading) return <Loader />
 
   return (
-    <div className="container mx-auto px-4 mt-9 mb-24">
-      <h1 className="text-2xl font-bold mb-4">Exercises</h1>
-      <div
-        className={`absolute right-0 top-0 left-0 bottom-0 bg-gray-900 bg-opacity-50 z-50 ${hidden}`}>
-        <div className="relative mt-24 mx-auto w-full bg-white p-8 rounded-lg shadow-lg max-w-[800px] min-w-[400px]">
-          <h2 className="text-2xl font-bold mb-4">Create Exercise</h2>
-          <button
-            className="absolute top-2 right-2 text-2xl text-gray-500 mr-2"
-            onClick={handleModal}>
-            &times;
-          </button>
-          <CreateExerciseForm onExerciseCreated={handleExerciseMutation} />
-        </div>
-      </div>
-      <section className="flex justify-between items-center mb-4 gap-4">
+    <div className="w-full sm:w-[500px] md:w-[628px] lg:w-[884px] xl:w-[1140px] 2xl:w-[1496px] mx-auto mt-9 mb-24">
+      <h1 className="text-2xl font-bold mb-4">Clients</h1>
+      <section className="flex justify-between items-center mb-4 gap-4 w-full">
         <input
           type="search"
           className="w-2/3 border border-gray-100 px-4 py-2 mb-4 rounded"
-          placeholder="Search exercises"
+          placeholder="Search clients"
           onChange={handleSearch}
         />
-        <div className="grow flex justify-between items-center mb-4 gap-2">
-          <button
-            className="rounded p-2 ml-4 bg-slate-100 text-green-800 shadow hover:bg-slate-200 hover:cursor-pointer active:bg-slate-300 active:shadow-inner transition-all duration-200"
-            onClick={handleModal}>
-            Create Exercise
-          </button>
+        <div className="grow flex justify-end items-center mb-4 gap-2">
           <div className="flex gap-3">
             <button
               className="rounded-full bg-slate-100 w-fit h-fit p-2 shadow hover:bg-slate-200 hover:cursor-pointer active:bg-slate-300 active:shadow-inner transition-all duration-200"
@@ -156,9 +123,9 @@ export default function ExercisesPage() {
           </div>
         </div>
       </section>
-      <ExercisesTable
-        exercises={edges}
-        onExerciseDeleted={handleExerciseMutation}
+      <ClientsTable
+        clients={edges}
+        // onClientsDeleted={handleClientsMutation}
         ITEMS_PER_PAGE={ITEMS_PER_PAGE}
       />
       <div className="flex justify-end items-center mt-4 mr-2">

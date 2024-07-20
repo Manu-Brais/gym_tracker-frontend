@@ -28,6 +28,11 @@ export default function Navbar() {
               onClick={handleClick}>
               Logout
             </button>
+            <Link to="/clients">
+              <button className="text-lg font-light text-gray-600">
+                Clients
+              </button>
+            </Link>
             <Link to="/exercises">
               <button className="text-lg font-light text-gray-600">
                 Exercises
