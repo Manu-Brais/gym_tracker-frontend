@@ -1,7 +1,8 @@
 import React, { createContext, useState, useContext } from "react"
-import Cookies from "js-cookie"
 import { jwtDecode } from "jwt-decode"
 import { toast } from "react-toastify"
+import Cookies from "js-cookie"
+import client from "../graphql/ApolloClient"
 
 const AuthContext = createContext()
 
@@ -9,11 +10,13 @@ export const AuthProvider = ({ children }) => {
   const token = Cookies.get("gt-token")
   let user_id = null
   let user_type = null
+  let exp = null
 
   if (token) {
     const decodedToken = jwtDecode(token)
     user_id = decodedToken.user_id
     user_type = decodedToken.user_type
+    exp = decodedToken.exp
   }
 
   const [isAuthenticated, setIsAuthenticated] = useState(!!token)
@@ -37,7 +40,12 @@ export const AuthProvider = ({ children }) => {
     setIsAuthenticated(false)
     setUserId(null)
     setUserType(null)
+    client.resetStore()
     toast.success("See you soon!", { icon: "👋" })
+  }
+
+  if (exp && exp < Date.now() / 1000) {
+    logOut()
   }
 
   return (

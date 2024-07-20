@@ -97,7 +97,7 @@ export default function ClientsPage() {
   if (loading) return <Loader />
 
   return (
-    <div className="w-full sm:w-[500px] md:w-[628px] lg:w-[884px] xl:w-[1140px] 2xl:w-[1496px] mx-auto mt-9 mb-24">
+    <div className="container mt-9 mb-24">
       <h1 className="text-2xl font-bold mb-4">Clients</h1>
       <section className="flex justify-between items-center mb-4 gap-4 w-full">
         <input
