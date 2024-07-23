@@ -113,7 +113,7 @@ export default function ExercisesPage() {
   if (loading) return <Loader />
 
   return (
-    <div className="container mx-auto px-4 mt-9 mb-24">
+    <div className="container mt-9 mb-24">
       <h1 className="text-2xl font-bold mb-4">Exercises</h1>
       <div
         className={`absolute right-0 top-0 left-0 bottom-0 bg-gray-900 bg-opacity-50 z-50 ${hidden}`}>

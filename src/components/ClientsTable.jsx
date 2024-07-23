@@ -42,25 +42,24 @@ function ClientsTable({ clients, onClientDeleted, ITEMS_PER_PAGE }) {
   return (
     <table className="w-full border-collapse rounded overflow-hidden shadow-sm">
       <caption className="hidden">Clients list</caption>
-      <thead className="bg-gray-100 border-collapse text-left w-full text-pretty text-lg">
+      <thead className="bg-gray-100 border-collapse text-left w-full text-pretty">
         <tr className="border-collapse">
-          <th className="w-[6%] py-4"></th>
-          <th className="w-[10%] px-4 py-4">Name</th>
-          <th className="w-[14%] px-4 py-4">Surname</th>
-          <th className="w-[25%] px-4 py-4">Email</th>
-          <th className="w-[25%] px-4 py-4">Start date</th>
-          <th className="w-[10%] py-4 text-center">Actions</th>
+          <th className="min-w-20 py-4"></th>
+          <th className="w-[15%] px-4 py-4">Name</th>
+          <th className="w-[15%] px-4 py-4">Surname</th>
+          <th className="w-[20%] px-4 py-4">Email</th>
+          <th className="w-[20%] px-4 py-4">Start date</th>
+          <th className="w-[20%] py-4 text-center">Actions</th>
         </tr>
       </thead>
       <tbody className="w-full h-full">
         {clients.map(({ node: client }, key) => (
           <tr
             key={key}
-            className="even:bg-gray-50 border-collapse h-20 text-pretty text-lg font-thin">
+            className="even:bg-gray-50 border-collapse h-20 text-pretty">
             <td className="px-3 py-3 truncate overflow-ellipsis whitespace-nowrap">
-              {/* The image will not decrease its size */}
               <img
-                className="w-20 h-20 rounded object-cover min-w-[80px] min-h-[80px]"
+                className="w-20 h-20 rounded object-cover aspect-square	"
                 src={
                   client.avatarUrl
                     ? `http://localhost:3000${client.avatarUrl}`
